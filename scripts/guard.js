@@ -42,7 +42,7 @@ function reportTarget(projectDir, cfg) {
   const main = path.join(projectDir, cfg.reportFile);
   try {
     const head = fs.readFileSync(main, 'utf8').slice(0, 200);
-    if (!head.startsWith(REPORT_HEADER)) return path.join(projectDir, '.claude', 'already-tried', 'LOOP-REPORT.md');
+    if (!head.startsWith(REPORT_HEADER)) return path.join(projectDir, '.claude', 'doom-loop-guard', 'LOOP-REPORT.md');
   } catch { /* does not exist yet: fine */ }
   return main;
 }

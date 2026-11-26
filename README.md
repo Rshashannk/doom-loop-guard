@@ -1,14 +1,14 @@
-# already-tried
+# doom-loop-guard
 
 **Your coding agent forgets what didn't work. This remembers.**
 
-A free Claude Code plugin. When Claude keeps hitting the same error, `already-tried`:
+A free Claude Code plugin. When Claude keeps hitting the same error, `doom-loop-guard`:
 
 1. **Warns** it on the 2nd repeat and lists the changes it already tried for that error.
 2. **Stops** the session on the 3rd repeat and writes `LOOP-REPORT.md`: what failed, what was tried, and a prompt you can paste into a fresh session.
 3. **Remembers** the failed fixes. The next session in the same project is told up front what already failed, and Claude is warned if it starts to re-apply one of those changes.
 
-Other loop guards stop the agent and then forget. The usual workaround for a stuck agent is "start a new chat", and a new chat has no idea what already failed. This is the part `already-tried` fixes.
+Other loop guards stop the agent and then forget. The usual workaround for a stuck agent is "start a new chat", and a new chat has no idea what already failed. This is the part `doom-loop-guard` fixes.
 
 Runs locally. No dependencies, no network, no API key, no model calls.
 
@@ -18,7 +18,7 @@ Inside Claude Code:
 
 ```
 /plugin marketplace add Rshashannk/doom-loop-guard
-/plugin install already-tried@already-tried
+/plugin install doom-loop-guard@doom-loop-guard
 ```
 
 Needs Node.js 20+ (already there if you installed Claude Code with npm).
@@ -40,7 +40,7 @@ A failure is only remembered across sessions if it repeated or had a fix tried a
 On the 2nd repeat:
 
 ```
-[already-tried] This is the 2nd time this exact error came back: AssertionError: expected 200, received 401.
+[doom-loop-guard] This is the 2nd time this exact error came back: AssertionError: expected 200, received 401.
 Changes already tried that did not fix it on their own: 1) auth.js: `if (!token) return deny()` → `if (token == null) return deny()`.
 Before trying again, state a different hypothesis for the root cause.
 ```
@@ -48,7 +48,7 @@ Before trying again, state a different hypothesis for the root cause.
 At the start of the next session:
 
 ```
-[already-tried] Earlier sessions in this project hit failures that are still unresolved. Do not repeat fixes that already failed:
+[doom-loop-guard] Earlier sessions in this project hit failures that are still unresolved. Do not repeat fixes that already failed:
 1. `npm test -- auth` failed 3 times (last 2026-11-25) with: AssertionError: expected 200, received 401
    Already tried, did not fix it on its own: 1) auth.js: `if (!token) return deny()` → `if (token == null) return deny()`; 2) auth.js: `jwt.verify(token, SECRET)` → `jwt.verify(token.trim(), SECRET)`
 ```
@@ -57,7 +57,7 @@ See a full [example LOOP-REPORT.md](examples/LOOP-REPORT.example.md).
 
 ## Configure
 
-Optional `.already-tried.json` in your project root:
+Optional `.doom-loop-guard.json` in your project root:
 
 ```json
 {
@@ -79,10 +79,10 @@ Optional `.already-tried.json` in your project root:
 - `repeatFix`: `"warn"` (default) tells Claude before it re-applies a failed change, `"block"` denies it once per session (Claude can repeat the edit to override), `"off"` disables it. A change that didn't fix an error on its own can still be part of the real fix, which is why the default only warns.
 - `ignoreCommands`: extra regexes for commands whose failures are normal. Checks such as `grep`, `test -f`, `which` and `curl localhost` are ignored by default (`"useDefaultIgnore": false` turns that off).
 - `windowMinutes`: a repeat only counts if the previous one was this recent.
-- A user-wide `~/.claude/already-tried.json` works too; the project file wins.
-- Turn it off: `ALREADY_TRIED=off` in the environment, or an empty `.already-tried-off` file in the project. `ALREADY_TRIED=warn` forces warn mode.
+- A user-wide `~/.claude/doom-loop-guard.json` works too; the project file wins.
+- Turn it off: `DOOM_LOOP_GUARD=off` in the environment, or an empty `.doom-loop-guard-off` file in the project. `DOOM_LOOP_GUARD=warn` forces warn mode.
 
-Files it writes in your project: `LOOP-REPORT.md` (on a stop) and `.claude/already-tried/memory.json`. Add them to `.gitignore` if you don't want them committed, or commit the memory file so your team shares it.
+Files it writes in your project: `LOOP-REPORT.md` (on a stop) and `.claude/doom-loop-guard/memory.json`. Add them to `.gitignore` if you don't want them committed, or commit the memory file so your team shares it.
 
 ## How it works
 
@@ -107,7 +107,7 @@ Loop detection itself is not new, and these are worth a look:
 - [LoopGuard](https://tryloopguard.com) — repeat-call and spend limits for Claude Code, Codex and Cursor.
 - [failproofai](https://github.com/FailproofAI/failproofai) — a large library of hook policies.
 
-`already-tried` is the one that remembers failed fixes across sessions and writes them down.
+`doom-loop-guard` is the one that remembers failed fixes across sessions and writes them down.
 
 ## Develop
 

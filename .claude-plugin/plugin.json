@@ -1,5 +1,5 @@
 {
-  "name": "already-tried",
+  "name": "doom-loop-guard",
   "version": "0.1.0",
   "description": "Remembers the fixes that already failed. Warns Claude when it repeats one, stops loops, and briefs the next session on what not to try again.",
   "license": "MIT",

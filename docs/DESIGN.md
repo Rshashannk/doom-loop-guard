@@ -1,4 +1,4 @@
-# Design: already-tried v0.1
+# Design: doom-loop-guard v0.1
 
 ## Shape
 One entry script, `scripts/guard.js`, handles every hook event: it reads the event JSON on stdin, loads config and state, calls the pure decision logic in `lib/engine.js`, writes state, and prints a JSON decision. It always exits 0.
@@ -7,9 +7,9 @@ One entry script, `scripts/guard.js`, handles every hook event: it reads the eve
 | --- | --- |
 | `lib/normalize.js` | Error normalization and hashing; edit (diff) fingerprints. |
 | `lib/engine.js` | Pure handlers per event; returns `{ output, memoryChanged, stop }`. |
-| `lib/store.js` | Session state (temp dir, per session) and project memory (`.claude/already-tried/memory.json`), atomic writes, pruning. |
+| `lib/store.js` | Session state (temp dir, per session) and project memory (`.claude/doom-loop-guard/memory.json`), atomic writes, pruning. |
 | `lib/report.js` | LOOP-REPORT.md renderer. |
-| `lib/config.js` | Defaults + `.already-tried.json` + env, never throws. |
+| `lib/config.js` | Defaults + `.doom-loop-guard.json` + env, never throws. |
 
 ## Facts verified against Claude Code 2.1.332 (real runs, 2026-11-25)
 - A Bash command that exits non-zero arrives as `PostToolUseFailure` with `error` = `"Exit code N\n<output>"`.

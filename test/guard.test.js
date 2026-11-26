@@ -11,7 +11,7 @@ function setup() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'at-test-'));
   const project = path.join(root, 'proj');
   fs.mkdirSync(project);
-  const env = { CLAUDE_PROJECT_DIR: project, ALREADY_TRIED_STATE_DIR: path.join(root, 'state') };
+  const env = { CLAUDE_PROJECT_DIR: project, DOOM_LOOP_GUARD_STATE_DIR: path.join(root, 'state') };
   let t = Date.parse('2026-11-25T10:00:00Z');
   const tick = () => new Date((t += 60000)).toISOString();
   const ev = (session, o) => run({ session_id: session, cwd: project, ...o }, env, tick());
@@ -103,7 +103,7 @@ test('repeat fix (default warn): Claude is told before re-applying a failed chan
 
 test('repeat fix (block): blocked once in a later session, allowed if Claude insists', () => {
   const { ev, project } = setup();
-  fs.writeFileSync(path.join(project, '.already-tried.json'), JSON.stringify({ repeatFix: 'block' }));
+  fs.writeFileSync(path.join(project, '.doom-loop-guard.json'), JSON.stringify({ repeatFix: 'block' }));
   ev('s1', start());
   ev('s1', fail()); ev('s1', edit('return 500', 'return 200')); ev('s1', fail());
   ev('s2', start());
@@ -140,15 +140,15 @@ test('S4: file thrash warns at 5 and stops at 6 edits while the error is unchang
 
 test('S6: off switch by env and by file; warn mode never stops', () => {
   const a = setup();
-  a.env.ALREADY_TRIED = 'off';
+  a.env.DOOM_LOOP_GUARD = 'off';
   for (let i = 0; i < 4; i++) assert.equal(a.ev('s1', fail()), null);
 
   const b = setup();
-  fs.writeFileSync(path.join(b.project, '.already-tried-off'), '');
+  fs.writeFileSync(path.join(b.project, '.doom-loop-guard-off'), '');
   for (let i = 0; i < 4; i++) assert.equal(b.ev('s1', fail()), null);
 
   const c = setup();
-  fs.writeFileSync(path.join(c.project, '.already-tried.json'), JSON.stringify({ mode: 'warn' }));
+  fs.writeFileSync(path.join(c.project, '.doom-loop-guard.json'), JSON.stringify({ mode: 'warn' }));
   c.ev('s1', start());
   for (let i = 0; i < 2; i++) c.ev('s1', fail());
   for (let i = 0; i < 3; i++) {
@@ -160,7 +160,7 @@ test('S6: off switch by env and by file; warn mode never stops', () => {
 
 test('custom thresholds apply, bad config falls back to defaults', () => {
   const a = setup();
-  fs.writeFileSync(path.join(a.project, '.already-tried.json'), JSON.stringify({ sameError: { warn: 3, stop: 5 } }));
+  fs.writeFileSync(path.join(a.project, '.doom-loop-guard.json'), JSON.stringify({ sameError: { warn: 3, stop: 5 } }));
   a.ev('s1', start());
   assert.equal(a.ev('s1', fail()), null);
   assert.equal(a.ev('s1', fail()), null);
@@ -169,7 +169,7 @@ test('custom thresholds apply, bad config falls back to defaults', () => {
   assert.equal(a.ev('s1', fail()).continue, false);
 
   const b = setup();
-  fs.writeFileSync(path.join(b.project, '.already-tried.json'), '{ not json');
+  fs.writeFileSync(path.join(b.project, '.doom-loop-guard.json'), '{ not json');
   b.ev('s1', start());
   b.ev('s1', fail()); b.ev('s1', fail());
   assert.equal(b.ev('s1', fail()).continue, false);
@@ -198,7 +198,7 @@ test('after a stop, resuming starts the count again', () => {
 
 test('the hook script never fails: bad stdin exits 0 with no output', () => {
   const r = spawnSync(process.execPath, [path.join(__dirname, '..', 'scripts', 'guard.js')], {
-    input: '{ broken', env: { ...process.env, ALREADY_TRIED_STATE_DIR: os.tmpdir() },
+    input: '{ broken', env: { ...process.env, DOOM_LOOP_GUARD_STATE_DIR: os.tmpdir() },
   });
   assert.equal(r.status, 0);
   assert.equal(r.stdout.toString(), '');
@@ -216,6 +216,6 @@ test('end to end through stdin with the recorded Claude Code payload', () => {
   assert.equal(last.status, 0);
   assert.equal(JSON.parse(last.stdout.toString()).continue, false);
   assert.ok(fs.existsSync(path.join(project, 'LOOP-REPORT.md')));
-  assert.ok(fs.existsSync(path.join(project, '.claude', 'already-tried', 'memory.json')));
+  assert.ok(fs.existsSync(path.join(project, '.claude', 'doom-loop-guard', 'memory.json')));
   void root;
 });

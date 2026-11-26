@@ -1,6 +1,6 @@
 # Edge cases
 
-Every case we found, what already-tried does, and the test that proves it. Test ids refer to `test/edge.test.js` (E..) and `test/guard.test.js` / `test/normalize.test.js` (named). "Verified live" means checked in a real Claude Code 2.1.332 session, not only in unit tests.
+Every case we found, what doom-loop-guard does, and the test that proves it. Test ids refer to `test/edge.test.js` (E..) and `test/guard.test.js` / `test/normalize.test.js` (named). "Verified live" means checked in a real Claude Code 2.1.332 session, not only in unit tests.
 
 ## Detection: what counts as a loop
 
@@ -60,7 +60,7 @@ Every case we found, what already-tried does, and the test that proves it. Test 
 
 | # | Case | Behaviour | Proof |
 | --- | --- | --- | --- |
-| 39 | A LOOP-REPORT.md you wrote yourself already exists | Not overwritten; report goes to `.claude/already-tried/LOOP-REPORT.md` and the stop message says so | E24 |
+| 39 | A LOOP-REPORT.md you wrote yourself already exists | Not overwritten; report goes to `.claude/doom-loop-guard/LOOP-REPORT.md` and the stop message says so | E24 |
 | 40 | Error text with ``` fences, pipes, control or terminal escape characters | Longer fence, escaped table cells, control chars stripped | E19 |
 | 41 | Secrets in commands or errors (API keys, GitHub/Slack/AWS tokens, JWTs, `password=`, `Bearer`) | Redacted before anything is stored, briefed or reported | E18 |
 | 42 | `reportFile` set to an absolute path or `../` | Rejected, default used | E32 |
@@ -77,8 +77,8 @@ Every case we found, what already-tried does, and the test that proves it. Test 
 | 48 | Subagents (same session id) | Counted separately by `agent_id` | E26 |
 | 49 | Huge outputs (MBs) | Input capped at 20 MB, normalisation at 50 KB; a 5 MB error takes well under a second | E20 |
 | 50 | Bad config (invalid JSON, negative numbers, bad regex, unknown keys) | Each bad value falls back to its default | E32, "custom thresholds…" |
-| 51 | Global settings for all projects | `~/.claude/already-tried.json`, overridden by the project file | E32 |
-| 52 | Turning it off | `ALREADY_TRIED=off` (also `0`, `false`, `no`, any case) or a `.already-tried-off` file | S6 test, E32 |
+| 51 | Global settings for all projects | `~/.claude/doom-loop-guard.json`, overridden by the project file | E32 |
+| 52 | Turning it off | `DOOM_LOOP_GUARD=off` (also `0`, `false`, `no`, any case) or a `.doom-loop-guard-off` file | S6 test, E32 |
 | 53 | Old session files piling up in temp | Deleted after 7 days on session start | store.pruneSessions |
 | 54 | Speed | About 35 ms per hook call (median, Linux); runs on every tool call because of the stop workaround | measured |
 | 55 | Windows paths and line endings | Backslash paths normalised, CRLF handled; CI runs on Windows, macOS and Linux | normalize tests, CI matrix |

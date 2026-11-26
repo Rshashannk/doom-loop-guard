@@ -1,6 +1,6 @@
 # Loop report
 
-Written by already-tried on 2026-11-25 14:11 UTC. Session `7f3c2a91`.
+Written by doom-loop-guard on 2026-11-25 14:11 UTC. Session `7f3c2a91`.
 
 ## Why it stopped
 
@@ -53,4 +53,4 @@ hypotheses for the root cause that are not covered above, and explain which
 one you will test first and why.
 ```
 
-_already-tried runs locally and sends nothing anywhere. Turn it off with `ALREADY_TRIED=off` or a `.already-tried-off` file._
+_doom-loop-guard runs locally and sends nothing anywhere. Turn it off with `DOOM_LOOP_GUARD=off` or a `.doom-loop-guard-off` file._
