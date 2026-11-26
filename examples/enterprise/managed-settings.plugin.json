@@ -1,0 +1,12 @@
+{
+  "extraKnownMarketplaces": {
+    "doom-loop-guard": {
+      "source": { "source": "github", "repo": "Rshashannk/doom-loop-guard" },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "doom-loop-guard@doom-loop-guard": true
+  },
+  "allowManagedHooksOnly": true
+}

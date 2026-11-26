@@ -32,6 +32,9 @@ Needs Node.js 20+ (already there if you installed Claude Code with npm).
 | Same fix again | Each edit is fingerprinted (file + old/new text, whitespace-insensitive). Edits made between two identical failures are recorded as "tried, did not fix it". | warn before re-applying, in this or any later session |
 | File thrash | One file edited over and over while the error never changes. | warn at 5, stop at 6 |
 | Fixed | When the failing command later passes, the failure is marked fixed and forgotten. | always |
+| Whole-file rewrites | The same existing file rewritten with Write again and again, when an Edit of a few lines would do. Each rewrite re-sends the whole file. | warn at 3 |
+| Same call, no error | The exact same tool call with the same input, over and over, even when it succeeds. | warn at 5, stop at 10 |
+| Session budget | Tokens (read from the session transcript) and tool calls per session. A hard bound for loops that never error. | off; set your own |
 
 A failure is only remembered across sessions if it repeated or had a fix tried against it, so one-off typos don't pile up. Memory expires after 14 days.
 
@@ -71,9 +74,18 @@ Optional `.doom-loop-guard.json` in your project root:
   "briefing": true,
   "memoryDays": 14,
   "report": true,
-  "reportFile": "LOOP-REPORT.md"
+  "reportFile": "LOOP-REPORT.md",
+  "rewriteChurn": { "warn": 3, "stop": 0 },
+  "sameCall": { "warn": 5, "stop": 10 },
+  "budget": {
+    "tokens": { "warn": 0, "stop": 0 },
+    "toolCalls": { "warn": 0, "stop": 0 }
+  },
+  "audit": true
 }
 ```
+
+A `0` turns that warn or stop level off. Budget tokens count input + cache writes + output (cache reads are not counted); after a budget stop, saying "keep going" gives the session one more full budget.
 
 - `mode: "warn"` never stops the session; it keeps warning and still writes the report.
 - `repeatFix`: `"warn"` (default) tells Claude before it re-applies a failed change, `"block"` denies it once per session (Claude can repeat the edit to override), `"off"` disables it. A change that didn't fix an error on its own can still be part of the real fix, which is why the default only warns.
@@ -82,7 +94,13 @@ Optional `.doom-loop-guard.json` in your project root:
 - A user-wide `~/.claude/doom-loop-guard.json` works too; the project file wins.
 - Turn it off: `DOOM_LOOP_GUARD=off` in the environment, or an empty `.doom-loop-guard-off` file in the project. `DOOM_LOOP_GUARD=warn` forces warn mode.
 
+Every warning and stop is also appended to a local audit log, `~/.claude/doom-loop-guard/audit.jsonl` (`"audit": false` turns it off). `node scripts/stats.js` summarizes it.
+
 Files it writes in your project: `LOOP-REPORT.md` (on a stop) and `.claude/doom-loop-guard/memory.json`. Add them to `.gitignore` if you don't want them committed, or commit the memory file so your team shares it.
+
+## For teams
+
+Force-enable it for every developer with Claude Code's managed settings, then lock the limits with an admin policy file that users and repos can't override. Every trip goes to a local audit log. It is still free, and it still makes no network calls. See [docs/ENTERPRISE.md](docs/ENTERPRISE.md).
 
 ## How it works
 
@@ -94,7 +112,7 @@ One small Node script handles five Claude Code hook events:
 | `UserPromptSubmit` | Notes the task, for the report. |
 | `PostToolUseFailure` | Hashes the error, counts repeats, records the edits that didn't fix it, warns or stops. |
 | `PostToolUse` (Edit, Write, Bash) | Fingerprints edits, counts file thrash, marks failures fixed when the command passes. |
-| `PreToolUse` | Warns before re-applying a failed change; delivers the stop. |
+| `PreToolUse` | Warns before re-applying a failed change, counts identical calls and session budgets, and delivers the stop. |
 
 Claude Code ignores `continue: false` from `PostToolUseFailure` hooks (checked on 2.1.332), so on the 3rd repeat the plugin tells Claude a loop was detected and halts the session on the next tool call. Any error inside the hook is swallowed and logged, so the plugin can't break a session. Secrets (API keys, tokens, passwords) are redacted before anything is stored. Every edge case we know of is listed, with its test, in [docs/EDGE-CASES.md](docs/EDGE-CASES.md).
 

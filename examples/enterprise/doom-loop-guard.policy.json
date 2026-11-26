@@ -1,0 +1,15 @@
+{
+  "lock": true,
+  "mode": "stop",
+  "sameError": { "warn": 2, "stop": 3 },
+  "sameCommand": { "warn": 4, "stop": 6 },
+  "fileThrash": { "warn": 5, "stop": 6 },
+  "rewriteChurn": { "warn": 3, "stop": 6 },
+  "sameCall": { "warn": 5, "stop": 10 },
+  "budget": {
+    "tokens": { "warn": 2000000, "stop": 4000000 },
+    "toolCalls": { "warn": 400, "stop": 800 }
+  },
+  "audit": true,
+  "auditFile": "/var/log/doom-loop-guard/audit.jsonl"
+}

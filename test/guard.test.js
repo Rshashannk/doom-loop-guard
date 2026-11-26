@@ -11,7 +11,7 @@ function setup() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'at-test-'));
   const project = path.join(root, 'proj');
   fs.mkdirSync(project);
-  const env = { CLAUDE_PROJECT_DIR: project, DOOM_LOOP_GUARD_STATE_DIR: path.join(root, 'state') };
+  const env = { CLAUDE_PROJECT_DIR: project, DOOM_LOOP_GUARD_STATE_DIR: path.join(root, 'state'), HOME: path.join(root, 'home') };
   let t = Date.parse('2026-11-25T10:00:00Z');
   const tick = () => new Date((t += 60000)).toISOString();
   const ev = (session, o) => run({ session_id: session, cwd: project, ...o }, env, tick());

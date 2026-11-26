@@ -23,3 +23,18 @@ Session state keeps `pendingEdits` (edits since the last failure) and `lastError
 
 ## Normalizer
 ANSI → removed; ISO and clock timestamps → `<TS>`; UUIDs → `<UUID>`; `0x…` and mixed hex ≥ 8 chars → `<HEX>`; absolute paths → basename; durations → `<DUR>`; `:line:col` and `line N` → `<N>`; whitespace collapsed. Exit codes and assertion values are kept on purpose, so progress (a changed value) is not mistaken for a loop.
+
+## v0.2 additions (2026-11-26)
+
+PRD: [docs/product/v0.2-enterprise-loop-control.md](product/v0.2-enterprise-loop-control.md).
+
+| Piece | Where | Notes |
+| --- | --- | --- |
+| Rewrite churn | `engine.rewriteChurn` (PostToolUse Write) | Counts only `tool_response.type === "update"`, which was verified live. If that is missing, it uses the existence check from `noteWriteTarget` at PreToolUse. |
+| Identical calls | `engine.checkSameCall` (PreToolUse) | sha1 of the tool name plus the input with sorted keys. Any different call resets it, and ignored commands reset it too. |
+| Budgets | `engine.checkBudget` (PreToolUse), `lib/budget.js` | `guard.js` reads the transcript incrementally (offset, 128-byte head, 64 recent message ids, 8 MB chunks) before calling the pure engine. Stops fire at each multiple of the limit. |
+| Pre-tool stops | `engine.preStop` | `continue:false` plus `permissionDecision: deny`. Both are honored on PreToolUse. |
+| Policy | `config.findPolicy` | The first system path that exists wins, even if broken. Otherwise `DOOM_LOOP_GUARD_POLICY`. Applied last. `lock` disables the off switches and user or repo `mode`. |
+| Audit | `lib/audit.js`, `scripts/stats.js` | Handlers return `events`, and `guard.js` appends one JSONL record per event after the decision. Each write is in its own try/catch. |
+
+Measured: on a 20 MB transcript, the first three hook calls take 9 to 30 ms while they catch up in 8 MB chunks. Later calls take under 2 ms in-process, and a whole hook process takes about 36 ms.
