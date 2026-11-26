@@ -1,4 +1,4 @@
-# PRD: already-tried v0.1
+# PRD: doom-loop-guard v0.1
 
 **Date:** 2026-11-25 · **Status:** accepted (Shashannk chose "build the memory version now") · **Owner:** Shashannk
 
@@ -21,7 +21,7 @@ A developer running Claude Code on a real repo who wants it to stop early when s
 3. **Stop at 3.** The session halts (verified in a real `claude -p` run) and LOOP-REPORT.md is written first.
 4. **Failed-fix memory.** Edits made between two identical failures are stored per project. A new session is briefed on unresolved failures (only ones that repeated or had a fix tried). Re-applying a stored change triggers a warning (or a one-time block in `block` mode). A passing run of the same command marks it fixed.
 5. **File thrash.** 6 edits to one file while the error is unchanged stop the session; warning at 5.
-6. **Off switch and warn mode.** `ALREADY_TRIED=off`, `.already-tried-off`, `mode: "warn"`; bad config falls back to defaults; the hook never crashes a session.
+6. **Off switch and warn mode.** `DOOM_LOOP_GUARD=off`, `.doom-loop-guard-off`, `mode: "warn"`; bad config falls back to defaults; the hook never crashes a session.
 
 ## Later
 - Detect A→B→A edit ping-pong without a tool error (v0.2).
@@ -35,5 +35,5 @@ A developer running Claude Code on a real repo who wants it to stop early when s
 - Dashboards or telemetry.
 
 ## Decided
-- Name `already-tried` is provisional until Shashannk confirms (loopguard is taken).
+- Name: `doom-loop-guard`, the same as the repo (decided 2026-11-26). "loopguard" is taken by another product, and the working name `already-tried` was dropped so there is one name everywhere.
 - `repeatFix` defaults to `warn`, not `block`: a real run showed a correct-but-insufficient fix being blocked.

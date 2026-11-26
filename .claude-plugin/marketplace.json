@@ -1,9 +1,9 @@
 {
-  "name": "already-tried",
+  "name": "doom-loop-guard",
   "owner": { "name": "Shashannk", "url": "https://github.com/Rshashannk" },
   "plugins": [
     {
-      "name": "already-tried",
+      "name": "doom-loop-guard",
       "source": "./",
       "description": "Remembers the fixes that already failed, warns on repeats, stops loops, and briefs the next session."
     }

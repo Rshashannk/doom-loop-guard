@@ -1,5 +1,5 @@
 {
-  "description": "already-tried: remembers failed fixes, warns on repeats, stops loops",
+  "description": "doom-loop-guard: remembers failed fixes, warns on repeats, stops loops",
   "hooks": {
     "SessionStart": [
       { "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/guard.js\"", "timeout": 10 }] }

@@ -16,8 +16,8 @@ function setup(cfg) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'at-edge-'));
   const project = path.join(root, 'proj');
   fs.mkdirSync(project);
-  if (cfg) fs.writeFileSync(path.join(project, '.already-tried.json'), JSON.stringify(cfg));
-  const env = { CLAUDE_PROJECT_DIR: project, ALREADY_TRIED_STATE_DIR: path.join(root, 'state'), HOME: path.join(root, 'home') };
+  if (cfg) fs.writeFileSync(path.join(project, '.doom-loop-guard.json'), JSON.stringify(cfg));
+  const env = { CLAUDE_PROJECT_DIR: project, DOOM_LOOP_GUARD_STATE_DIR: path.join(root, 'state'), HOME: path.join(root, 'home') };
   let t = Date.parse('2026-11-25T10:00:00Z');
   const at = (mins) => { t += (mins || 1) * 60000; return new Date(t).toISOString(); };
   const ev = (o, mins, session = 's1') => run({ session_id: session, cwd: project, ...o }, env, at(mins));
@@ -89,7 +89,7 @@ test('E06 user rejections and our own blocks never count as failures', () => {
   ev(start());
   for (let i = 0; i < 4; i++) {
     assert.equal(ev(bash('rm -rf build', "The user doesn't want to proceed with this tool use.")), null);
-    assert.equal(ev(bash('x', '[already-tried] This exact change was already tried')), null);
+    assert.equal(ev(bash('x', '[doom-loop-guard] This exact change was already tried')), null);
   }
 });
 
@@ -151,7 +151,7 @@ test('E13 whitespace-only edits, docs edits and our own files are not counted as
   assert.equal(describeEdit('Edit', { file_path: '/p/a.js', old_string: 'a  =1', new_string: 'a =1' }, '/p', cfg).skip, true);
   assert.equal(describeEdit('Edit', { file_path: '/p/README.md', old_string: 'a', new_string: 'b' }, '/p', cfg).skip, true);
   assert.equal(describeEdit('Write', { file_path: '/p/LOOP-REPORT.md', content: 'x' }, '/p', cfg).skip, true);
-  assert.equal(describeEdit('Write', { file_path: '/p/.claude/already-tried/memory.json', content: '{}' }, '/p', cfg).skip, true);
+  assert.equal(describeEdit('Write', { file_path: '/p/.claude/doom-loop-guard/memory.json', content: '{}' }, '/p', cfg).skip, true);
   assert.equal(describeEdit('Edit', { file_path: '/p/a.js', old_string: 'a', new_string: 'b' }, '/p', cfg).skip, false);
 });
 
@@ -204,7 +204,7 @@ test('E18 secrets are redacted from memory, briefing and report', () => {
   ev(start());
   const f = bash('API_KEY=sk-live-abcdefghijklmnopqrstu npm test', 'Exit code 1\nError: invalid token=abcd1234efgh5678');
   ev(f); ev(f); ev(f);
-  const files = [path.join(project, '.claude/already-tried/memory.json'), path.join(project, 'LOOP-REPORT.md')];
+  const files = [path.join(project, '.claude/doom-loop-guard/memory.json'), path.join(project, 'LOOP-REPORT.md')];
   for (const file of files) {
     const text = fs.readFileSync(file, 'utf8');
     assert.ok(!text.includes('sk-live-abcdefghijklmnopqrstu'), file);
@@ -235,7 +235,7 @@ test('E20 huge error output is handled quickly and capped', () => {
 // ---------- state, files and failure handling ----------
 test('E21 corrupt memory file is kept aside, not silently overwritten', () => {
   const { ev, project } = setup();
-  const dir = path.join(project, '.claude/already-tried');
+  const dir = path.join(project, '.claude/doom-loop-guard');
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'memory.json'), '<<<<<<< HEAD\n{}');
   ev(start());
@@ -246,7 +246,7 @@ test('E21 corrupt memory file is kept aside, not silently overwritten', () => {
 
 test('E22 memory with wrong shapes (hand-edited) does not crash', () => {
   const { ev, project } = setup();
-  const dir = path.join(project, '.claude/already-tried');
+  const dir = path.join(project, '.claude/doom-loop-guard');
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'memory.json'), JSON.stringify({ version: 1, failures: { x: null, y: { count: 'a', lastAt: 'never', attempts: 'no' } } }));
   ev(start());
@@ -273,8 +273,8 @@ test('E24 an existing LOOP-REPORT.md written by someone else is not overwritten'
   ev(f); ev(f);
   const out = ev(f);
   assert.equal(fs.readFileSync(path.join(project, 'LOOP-REPORT.md'), 'utf8'), '# My own notes\n');
-  assert.ok(fs.existsSync(path.join(project, '.claude/already-tried/LOOP-REPORT.md')));
-  assert.match(out.stopReason, /\.claude\/already-tried\/LOOP-REPORT\.md/);
+  assert.ok(fs.existsSync(path.join(project, '.claude/doom-loop-guard/LOOP-REPORT.md')));
+  assert.match(out.stopReason, /\.claude\/doom-loop-guard\/LOOP-REPORT\.md/);
 });
 
 test('E25 missing session id, missing cwd, non-object input', () => {
@@ -345,20 +345,20 @@ test('E31 parallel hook processes do not lose updates', async () => {
       tool_input: { command: `cmd${i}` }, error: `Exit code 1\nError: distinct failure number ${'abcdefghijkl'[i]}` }));
   });
   await Promise.all(Array.from({ length: 8 }, (_, i) => one(i)));
-  const mem = JSON.parse(fs.readFileSync(path.join(project, '.claude/already-tried/memory.json'), 'utf8'));
+  const mem = JSON.parse(fs.readFileSync(path.join(project, '.claude/doom-loop-guard/memory.json'), 'utf8'));
   assert.equal(Object.keys(mem.failures).length, 8);
 });
 
 test('E32 config: bad values, unknown keys and a user-level file', () => {
   const { root, project } = setup();
   fs.mkdirSync(path.join(root, 'home', '.claude'), { recursive: true });
-  fs.writeFileSync(path.join(root, 'home', '.claude', 'already-tried.json'), JSON.stringify({ mode: 'warn', sameError: { stop: 4 } }));
-  fs.writeFileSync(path.join(project, '.already-tried.json'), JSON.stringify({ sameError: { warn: -1 }, reportFile: '../../etc/x', ignoreCommands: ['(', 5], wat: 1 }));
+  fs.writeFileSync(path.join(root, 'home', '.claude', 'doom-loop-guard.json'), JSON.stringify({ mode: 'warn', sameError: { stop: 4 } }));
+  fs.writeFileSync(path.join(project, '.doom-loop-guard.json'), JSON.stringify({ sameError: { warn: -1 }, reportFile: '../../etc/x', ignoreCommands: ['(', 5], wat: 1 }));
   const c = loadConfig(project, { HOME: path.join(root, 'home') });
   assert.equal(c.mode, 'warn');
   assert.deepEqual(c.sameError, { warn: 2, stop: 4 });
   assert.equal(c.reportFile, 'LOOP-REPORT.md');
-  assert.equal(loadConfig(project, { HOME: path.join(root, 'home'), ALREADY_TRIED: ' OFF ' }).off, true);
+  assert.equal(loadConfig(project, { HOME: path.join(root, 'home'), DOOM_LOOP_GUARD: ' OFF ' }).off, true);
 });
 
 test('E33 ordinals read correctly', () => {

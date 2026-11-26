@@ -9,4 +9,4 @@
 - Same-command counter: the same command failing 6 times in a row stops the session, whatever the error says (warn at 4).
 - Failures hidden behind `; echo "EXIT:$?"` are recovered and counted.
 - Secret redaction, lock files for parallel hooks, ignore list for normal checks, 30-minute repeat window.
-- `.already-tried.json` (and `~/.claude/already-tried.json`) config, warn mode, and off switches.
+- `.doom-loop-guard.json` (and `~/.claude/doom-loop-guard.json`) config, warn mode, and off switches.
