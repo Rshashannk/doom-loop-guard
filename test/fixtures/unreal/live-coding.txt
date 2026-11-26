@@ -1,0 +1,7 @@
+Exit code 6
+Using bundled DotNet SDK version: 8.0.300
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" ShooterGameEditor Win64 Development -Project="C:\Users\dev\Projects\ShooterGame\ShooterGame.uproject" -WaitMutex -FromMsBuild
+Log file: C:\Users\dev\AppData\Local\UnrealBuildTool\Log.txt
+Unable to build while Live Coding is active. Exit the editor and game, or press Ctrl+Alt+F11 if iterating on code in the editor or game
+Result: Failed (LiveCodingActive)
+Total execution time: 0.62 seconds

@@ -1,0 +1,8 @@
+Exit code 6
+Building 2 actions with 2 processes...
+[1/2] Link [x64] UnrealEditor-ShooterGame.dll
+   Creating library C:\Users\dev\Projects\ShooterGame\Intermediate\Build\Win64\x64\UnrealEditor\Development\ShooterGame\UnrealEditor-ShooterGame.suppressed.lib and object C:\Users\dev\Projects\ShooterGame\Intermediate\Build\Win64\x64\UnrealEditor\Development\ShooterGame\UnrealEditor-ShooterGame.suppressed.exp
+Module.ShooterGame.4.cpp.obj : error LNK2019: unresolved external symbol "public: void __cdecl UWeaponComponent::Reload(int)" (?Reload@UWeaponComponent@@QEAAXH@Z) referenced in function "public: virtual void __cdecl AShooterCharacter::Tick(float)" (?Tick@AShooterCharacter@@UEAAXM@Z)
+C:\Users\dev\Projects\ShooterGame\Binaries\Win64\UnrealEditor-ShooterGame.dll : fatal error LNK1120: 1 unresolved externals
+Result: Failed (OtherCompilationError)
+Total execution time: 5.12 seconds

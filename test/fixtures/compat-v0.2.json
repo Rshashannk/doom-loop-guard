@@ -1,0 +1,149 @@
+[
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\n[eval]:1\nthrow new Error('boom at 12:00:01')\n^\n\nError: boom at 12:00:01\n    at [eval]:1:7\n    at runScriptInThisContext (node:internal/vm:209:10)\n    at node:internal/process/execution:446:12\n\nNode.js v22.23.5",
+  "context": "",
+  "hash": "97359a64f63f",
+  "normalized": "Exit code 1\n[eval]:<N>\nthrow new Error('boom at <TS>')\n^\nError: boom at <TS>\n at [eval]:<N>\n at runScriptInThisContext (node:internal/vm:<N>)\n at node:internal/process/execution:<N>\nNode.js v22.23.5"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\nTypeError: x is undefined",
+  "context": "",
+  "hash": "0c25746a8bd1",
+  "normalized": "Exit code 1\nTypeError: x is undefined"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\nReferenceError: y is not defined",
+  "context": "",
+  "hash": "86239635b91d",
+  "normalized": "Exit code 1\nReferenceError: y is not defined"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1",
+  "context": "npm test",
+  "hash": "6b3fad3c1620",
+  "normalized": "Exit code 1"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 2",
+  "context": "make",
+  "hash": "34da5dab17fe",
+  "normalized": "Exit code 2"
+ },
+ {
+  "tool": "Bash",
+  "error": "expected 42 got 41",
+  "context": "",
+  "hash": "296b3d3b41f0",
+  "normalized": "expected 42 got 41"
+ },
+ {
+  "tool": "Bash",
+  "error": "2026-11-25T23:32:48.123Z ERROR boom",
+  "context": "",
+  "hash": "51d19577966b",
+  "normalized": "<TS> ERROR boom"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\nTraceback (most recent call last):\n  File \"/home/u/app/x.py\", line 42, in f\n    return g()\n  File \"/home/u/app/y.py\", line 7, in g\n    raise ValueError(\"bad value 3\")\nValueError: bad value 3",
+  "context": "",
+  "hash": "f56bf3f9bb29",
+  "normalized": "Exit code 1\nTraceback (most recent call last):\n File \"x.py\", line <N>, in f\n return g()\n File \"y.py\", line <N>, in g\n raise ValueError(\"bad value 3\")\nValueError: bad value 3"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\n============ FAILURES ============\n___ test_add ___\n    def test_add():\n>       assert add(1, 2) == 4\nE       assert 3 == 4\ntests/test_math.py:5: AssertionError\n=== short test summary info ===\nFAILED tests/test_math.py::test_add - assert 3 == 4\n1 failed, 3 passed in 0.12s",
+  "context": "",
+  "hash": "6bdf630cfd30",
+  "normalized": "Exit code 1\n============ FAILURES ============\n___ test_add ___\n def test_add():\n> assert add(1, 2) == 4\nE assert 3 == 4\ntests/test_math.py:<N>: AssertionError\n=== short test summary info ===\nFAILED tests/test_math.py::test_add - assert 3 == 4\n1 failed, 3 passed in <DUR>"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\nnpm ERR! code ELIFECYCLE\nnpm ERR! errno 1\nnpm ERR! app@1.0.0 test: `jest`\nnpm ERR! Exit status 1",
+  "context": "",
+  "hash": "d0ab10e1447f",
+  "normalized": "Exit code 1\nnpm ERR! code ELIFECYCLE\nnpm ERR! errno 1\nnpm ERR! app@1.0.0 test: `jest`\nnpm ERR! Exit status 1"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\n✖ test/api.test.js\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 500\n\n    at TestContext.<anonymous> (file:///home/u/app/test/api.test.js:12:10)",
+  "context": "",
+  "hash": "41363a553cca",
+  "normalized": "Exit code 1\n✖ test/api.test.js\n AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n200 !== 500\n at TestContext.<anonymous> (file://api.test.js:<N>)"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 127\nbash: line 1: pnpx: command not found",
+  "context": "",
+  "hash": "b00e98420210",
+  "normalized": "Exit code 127\nbash: line <N>: pnpx: command not found"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\nError: connect ECONNREFUSED 127.0.0.1:5432\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)",
+  "context": "",
+  "hash": "8efbe4938784",
+  "normalized": "Exit code 1\nError: connect ECONNREFUSED 127.0.0.1:<N>\n at TCPConnectWrap.afterConnect [as oncomplete] (node:net:<N>)"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\nerror: failed to push some refs to 'github.com:a/b.git'\nhint: Updates were rejected because the remote contains work",
+  "context": "",
+  "hash": "23b22a95c92c",
+  "normalized": "Exit code 1\nerror: failed to push some refs to 'github.com:a/b.git'\nhint: Updates were rejected because the remote contains work"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\nFAIL src/sum.test.js\n  ● sum › adds\n\n    expect(received).toBe(expected) // Object.is equality\n\n    Expected: 4\n    Received: 3",
+  "context": "",
+  "hash": "cb6215db363c",
+  "normalized": "Exit code 1\nFAIL src/sum.test.js\n ● sum › adds\n expect(received).toBe(expected) // Object.is equality\n Expected: 4\n Received: 3"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 2\nmake: *** No rule to make target 'run'.  Stop.",
+  "context": "",
+  "hash": "3e7ac74a4e8c",
+  "normalized": "Exit code 2\nmake: *** No rule to make target 'run'. Stop."
+ },
+ {
+  "tool": "Read",
+  "error": "File does not exist.",
+  "context": "src/a/index.js",
+  "hash": "14430c2bd73d",
+  "normalized": "File does not exist."
+ },
+ {
+  "tool": "WebFetch",
+  "error": "Request failed with status code 404",
+  "context": "https://example.com/x",
+  "hash": "653155c745cf",
+  "normalized": "Request failed with status code 404"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\n\u001b[31mFAIL\u001b[0m test (12 ms)\nC:\\Users\\a\\proj\\x.ts failed",
+  "context": "",
+  "hash": "ebe038a5a2eb",
+  "normalized": "Exit code 1\nFAIL test (<DUR>)\nx.ts failed"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\nsegfault at 0x7ffd5e8c1a20 request 3f2a9c1e-5b7d-4e8a-9c21-7d4e5f6a8b90 commit a1b2c3d4e5f6",
+  "context": "",
+  "hash": "f314437143da",
+  "normalized": "Exit code 1\nsegfault at <HEX> request <UUID> commit <HEX>"
+ },
+ {
+  "tool": "Bash",
+  "error": "Exit code 1\napi_key=abcdefghijklmnop Bearer zzzzzzzzzzzzzzzz ghp_aaaaaaaaaaaaaaaaaaaaaaaa",
+  "context": "",
+  "hash": "07a5bfd748b2",
+  "normalized": "Exit code 1\napi_key=<SECRET> Bearer <SECRET> <SECRET>"
+ }
+]

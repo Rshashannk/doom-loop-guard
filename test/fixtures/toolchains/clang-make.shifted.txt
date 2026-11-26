@@ -1,0 +1,17 @@
+Exit code 2
+clang++ -c a.cpp -o a.o
+clang++ -c b.cpp -o b.o
+b.cpp:4:37: error: invalid operands to binary expression ('const char[2]' and 'int')
+    4 | int b() { return undeclared_b + "x" * 2; }
+      |                                 ~~~ ^ ~
+b.cpp:4:18: error: use of undeclared identifier 'undeclared_b'
+    4 | int b() { return undeclared_b + "x" * 2; }
+      |                  ^
+a.cpp:4:10: fatal error: 'missing_header.h' file not found
+    4 | #include "missing_header.h"
+      |          ^~~~~~~~~~~~~~~~~~
+2 errors generated.
+1 error generated.
+make: *** [Makefile:3: b.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [Makefile:3: a.o] Error 1

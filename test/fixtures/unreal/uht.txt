@@ -1,0 +1,11 @@
+Exit code 6
+Using bundled DotNet SDK version: 8.0.300
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" ShooterGameEditor Win64 Development -Project="C:\Users\dev\Projects\ShooterGame\ShooterGame.uproject" -WaitMutex
+Log file: C:\Users\dev\AppData\Local\UnrealBuildTool\Log.txt
+Parsing headers for ShooterGameEditor
+  Running Internal UnrealHeaderTool C:\Users\dev\Projects\ShooterGame\ShooterGame.uproject C:\Users\dev\Projects\ShooterGame\Intermediate\Build\Win64\ShooterGameEditor\Development\ShooterGameEditor.uhtmanifest -WarningsAsErrors -installed
+C:\Users\dev\Projects\ShooterGame\Source\ShooterGame\Public\WeaponComponent.h(24): Error: Unrecognized type 'FAmmoInfo' - type must be a UCLASS, USTRUCT, UENUM, or global delegate.
+C:\Users\dev\Projects\ShooterGame\Source\ShooterGame\Public\ShooterCharacter.h(9): Error: #include found after .generated.h file - the .generated.h file should always be the last #include in a header
+Total of 0 written
+Result: Failed (OtherCompilationError)
+Total execution time: 4.21 seconds

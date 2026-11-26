@@ -36,6 +36,21 @@ Needs Node.js 20+ (already there if you installed Claude Code with npm).
 | Same call, no error | The exact same tool call with the same input, over and over, even when it succeeds. | warn at 5, stop at 10 |
 | Session budget | Tokens (read from the session transcript) and tool calls per session. A hard bound for loops that never error. | off; set your own |
 
+### Works with any toolchain
+
+Build output is where loop detectors usually fail. Parallel jobs print errors in a different order, code frames carry line numbers, and the real error sits at the end of megabytes of progress lines. When a failure comes from a build, compile, type-check or lint command, `doom-loop-guard` fingerprints only its error diagnostics: file name, error code and message, sorted. The same error then stays the same error even when lines move. Fixing one of five errors is treated as progress.
+
+| | Covered |
+| --- | --- |
+| Game engines | Unreal Engine (UnrealBuildTool, UnrealHeaderTool, RunUAT, editor automation tests, Live Coding), Unity and Godot C# |
+| Native | MSVC, MSBuild, clang-cl, gcc, clang, nvcc, Make, Ninja, CMake, Bazel; MSVC, GNU, LLVM and Apple linkers |
+| Languages | Rust (cargo), Go, Java and Kotlin (javac, Gradle, Maven), C#/.NET, Swift and Xcode, TypeScript (tsc), Python (mypy, pyright) |
+| Test runners | jest, vitest, pytest, cargo test, go test, node:test (code frames and timings ignored) |
+| Monorepos | turbo, nx, pnpm and docker compose line prefixes |
+| Platforms | Windows (paths with spaces, CRLF, PowerShell, `$LASTEXITCODE`), macOS, Linux; compilers localised to German, French, Japanese and more |
+
+It also tells Claude, on the first failure, when retrying cannot help: Unreal's Live Coding blocking a build, a DLL locked by a running editor, the build running out of memory, or a full disk. It warns before Claude edits a generated file (`*.generated.h`, `*.pb.go`, `node_modules/`) that the next build would overwrite. A build that hits the shell timeout is not treated as a repeated error, because a rerun continues where it stopped.
+
 A failure is only remembered across sessions if it repeated or had a fix tried against it, so one-off typos don't pile up. Memory expires after 14 days.
 
 ## What Claude sees
@@ -81,7 +96,10 @@ Optional `.doom-loop-guard.json` in your project root:
     "tokens": { "warn": 0, "stop": 0 },
     "toolCalls": { "warn": 0, "stop": 0 }
   },
-  "audit": true
+  "audit": true,
+  "fingerprint": "auto",
+  "hints": true,
+  "generatedFiles": "warn"
 }
 ```
 
@@ -91,6 +109,8 @@ A `0` turns that warn or stop level off. Budget tokens count input + cache write
 - `repeatFix`: `"warn"` (default) tells Claude before it re-applies a failed change, `"block"` denies it once per session (Claude can repeat the edit to override), `"off"` disables it. A change that didn't fix an error on its own can still be part of the real fix, which is why the default only warns.
 - `ignoreCommands`: extra regexes for commands whose failures are normal. Checks such as `grep`, `test -f`, `which` and `curl localhost` are ignored by default (`"useDefaultIgnore": false` turns that off).
 - `windowMinutes`: a repeat only counts if the previous one was this recent.
+- `fingerprint`: `"auto"` (default) fingerprints build failures by their diagnostics; `"legacy"` hashes the whole output as v0.2 did.
+- `hints: false` turns off the one-time environment hints. `generatedFiles: "off"` turns off the generated-file warning.
 - A user-wide `~/.claude/doom-loop-guard.json` works too; the project file wins.
 - Turn it off: `DOOM_LOOP_GUARD=off` in the environment, or an empty `.doom-loop-guard-off` file in the project. `DOOM_LOOP_GUARD=warn` forces warn mode.
 
@@ -111,7 +131,7 @@ One small Node script handles five Claude Code hook events:
 | `SessionStart` | Briefs a new session on unresolved failures from earlier sessions. |
 | `UserPromptSubmit` | Notes the task, for the report. |
 | `PostToolUseFailure` | Hashes the error, counts repeats, records the edits that didn't fix it, warns or stops. |
-| `PostToolUse` (Edit, Write, Bash) | Fingerprints edits, counts file thrash, marks failures fixed when the command passes. |
+| `PostToolUse` (Edit, Write, Bash, PowerShell) | Fingerprints edits, counts file thrash, marks failures fixed when the command passes. |
 | `PreToolUse` | Warns before re-applying a failed change, counts identical calls and session budgets, and delivers the stop. |
 
 Claude Code ignores `continue: false` from `PostToolUseFailure` hooks (checked on 2.1.332), so on the 3rd repeat the plugin tells Claude a loop was detected and halts the session on the next tool call. Any error inside the hook is swallowed and logged, so the plugin can't break a session. Secrets (API keys, tokens, passwords) are redacted before anything is stored. Every edge case we know of is listed, with its test, in [docs/EDGE-CASES.md](docs/EDGE-CASES.md).

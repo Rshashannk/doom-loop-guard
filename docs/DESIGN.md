@@ -38,3 +38,23 @@ PRD: [docs/product/v0.2-enterprise-loop-control.md](product/v0.2-enterprise-loop
 | Audit | `lib/audit.js`, `scripts/stats.js` | Handlers return `events`, and `guard.js` appends one JSONL record per event after the decision. Each write is in its own try/catch. |
 
 Measured: on a 20 MB transcript, the first three hook calls take 9 to 30 ms while they catch up in 8 MB chunks. Later calls take under 2 ms in-process, and a whole hook process takes about 36 ms.
+
+## v0.3 additions (2026-11-26)
+
+PRD: [docs/product/v0.3-toolchain-coverage.md](product/v0.3-toolchain-coverage.md).
+
+| Piece | Where | Notes |
+| --- | --- | --- |
+| Diagnostics fingerprint | `toolchain.signature`, called from `engine.failureFingerprint` | It is used for shell tools when (a) the command is a build, compile, type-check or lint command, or the text has build-log markers, or it is Unreal, and (b) at least one diagnostic has a location or an error code. Without a build command or build markers, at least one diagnostic must have an error code. The key is the exit code plus the sorted, unique canonical lines (at most 500). Otherwise the v0.2 path runs. |
+| Canonical diagnostic | `toolchain.canon` | `<basename>: <error\|fatal error> <CODE>: <message>`. The message goes through `normalize`, plus `file(12,5)` and `[Line: N]` stripping. Capped at 300 characters. Severity words are mapped to English, so a localised compiler matches. |
+| Line patterns | `toolchain.PATTERNS`, `matchUnreal` | They are tried in order on each line that passes a cheap prefilter. Lines are cut to 4,000 characters first. Task-runner prefixes are retried once. rustc `error[E…]` takes its file from the following `-->` line. MSVC warnings are kept only if the output says warnings are treated as errors. |
+| Generic normalizer | `normalize.RULES` | New rules cover the Unreal log prefix, buildx step timings, `[n/m]` progress, code-frame gutters, rust thread ids, jest and vitest time summaries, `file(12,5)` locations (source extensions only), gcc and clang temp objects, and Unreal unity file numbers. Over 50 KB, it keeps the first 10 KB and the last 40 KB. |
+| Environment hints | `toolchain.envHints`, `engine.withHints` | A table of regexes. Each hint fires once per session (`state.warned['hint:<id>']`) and is merged into whatever the failure returns. It is never added to a stop. |
+| Build timeouts | `engine.onFailure` (`timedOutBuild`) | The same-error count is reset and not acted on. The same-command count still runs. |
+| Silent failures | `toolchain.silentFailure`, `engine.onPostBash` | Only for UnrealEditor(-Cmd) automation runs, and only on `Result={Fail}` or `TEST COMPLETE. EXIT CODE: N` with N > 0. It reuses the masked-exit-code path. |
+| Generated files | `toolchain.generatedFile`, `engine.generatedEdit` (PreToolUse) | Path patterns only. No file reads in the engine. |
+| PowerShell | `engine.SHELL_TOOLS`, `hooks.json` | Treated like Bash everywhere. |
+
+Measured: a whole hook process takes 68 ms on a 1 MB build log, 137 ms on 6 MB and 284 ms on 19 MB, with the error on the last line. The hook timeout is 10 s.
+
+Compatibility: `test/fixtures/compat-v0.2.json` freezes the v0.2 hash of 21 ordinary outputs, and a test fails if any of them changes.

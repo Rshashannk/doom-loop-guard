@@ -1,0 +1,10 @@
+Exit code 1
+Foo.java:1: error: cannot find symbol
+public class Foo { void f() { int x = undefinedThing; String s = 5; } }
+                                      ^
+  symbol:   variable undefinedThing
+  location: class Foo
+Foo.java:1: error: incompatible types: int cannot be converted to String
+public class Foo { void f() { int x = undefinedThing; String s = 5; } }
+                                                                 ^
+2 errors

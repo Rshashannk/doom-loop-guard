@@ -1,0 +1,5 @@
+Exit code 1
+# example.com/x
+./main.go:5:27: undefined: y
+./main.go:5:35: declared and not used: z
+./main.go:5:43: cannot use "s" (untyped string constant) as int value in variable declaration

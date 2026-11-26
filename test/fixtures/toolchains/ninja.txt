@@ -1,0 +1,22 @@
+Exit code 1
+[1/2] g++ -c a.cpp -o a.o
+FAILED: a.o 
+g++ -c a.cpp -o a.o
+a.cpp:1:10: fatal error: missing_header.h: No such file or directory
+    1 | #include "missing_header.h"
+      |          ^~~~~~~~~~~~~~~~~~
+compilation terminated.
+[2/2] g++ -c b.cpp -o b.o
+FAILED: b.o 
+g++ -c b.cpp -o b.o
+b.cpp: In function 'int b()':
+b.cpp:1:18: error: 'undeclared_b' was not declared in this scope
+    1 | int b() { return undeclared_b + "x" * 2; }
+      |                  ^~~~~~~~~~~~
+b.cpp:1:37: error: invalid operands of types 'const char [2]' and 'int' to binary 'operator*'
+    1 | int b() { return undeclared_b + "x" * 2; }
+      |                                 ~~~ ^ ~
+      |                                 |     |
+      |                                 |     int
+      |                                 const char [2]
+ninja: build stopped: subcommand failed.

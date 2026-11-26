@@ -1,0 +1,6 @@
+Exit code 1
+--- FAIL: TestAdd (0.00s)
+    main_test.go:3: expected 3 got 2
+FAIL
+FAIL	example.com/x	0.001s
+FAIL

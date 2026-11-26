@@ -109,6 +109,43 @@ Every case we found, what doom-loop-guard does, and the test that proves it. Tes
 | 76 | Audit path not writable | Logged to errors.log. The warning still reaches Claude | V17 |
 | 77 | Tests writing to the real home folder | Every test sets `HOME` to a temp folder | all suites |
 
+## v0.3: toolchains, Unreal, environments
+
+Fixtures: `test/fixtures/toolchains/` holds real output captured from gcc 13, clang 18, GNU make, ninja, Go, cargo, javac, tsc, jest 29 and pytest. `test/fixtures/unreal/` holds logs built by hand from the formats Unreal and MSVC print. Tests are in `test/toolchain.test.js` (T..).
+
+| # | Case | Handling | Test |
+| --- | --- | --- | --- |
+| 78 | Same compile error after the agent adds or removes lines above it | Code-frame gutters and `file(12,5)` locations are stripped, and build failures use diagnostics only | T same-error ×12 |
+| 79 | `make -j` / `ninja` / UBT print parallel errors in a different order | Diagnostics are sorted before hashing | T gcc reordered, UBT |
+| 80 | Fixing one of several errors | Different fingerprint: progress | T "fixing one of several" |
+| 81 | Random linker temp files (`/tmp/ccXXXXXX.o`, `c-1a2b3c.o`) | Stripped | T GNU ld, generic |
+| 82 | Rust panics print a thread id that changes every run | Stripped | T cargo test |
+| 83 | jest adds "estimated" to its time line from run 2 on | Time and duration summaries are stripped | T jest |
+| 84 | A test log that happens to contain `x.js:12: error: …` | Diagnostics mode needs a build command, build-log markers or an error code, so changing assertions still differ | T false positives |
+| 85 | `cargo test` prints only `error: test failed` | Not treated as a diagnostic, so the panic message decides | T cargo test |
+| 86 | Unreal UBT: action counts, `[n/m]`, timings, unity files renumbered, engine path | Noise | T UBT, LNK2019 |
+| 87 | Unreal recognised from the log behind a wrapper script; a project's own `build.sh` is not Unreal | Command or log markers | T wrapper, build.sh |
+| 88 | UnrealHeaderTool `Header.h(24): Error: …` | Diagnostic per header | T UHT |
+| 89 | Editor automation: `[2026.11.26-21.45.13:123][ 87]` prefixes, `[Line: 41]` | Stripped. Assertion values are kept | T automation |
+| 90 | Editor exits 0 with failed automation tests | Counted as a failure (Unreal editor test runs only) | T silent failure |
+| 91 | `RunUAT BuildCookRun` cook errors | `LogCook: Error` lines and `ExitCode=25 (Error_UnknownCookFailure)` | T UAT |
+| 92 | Live Coding active, conflicting UBT, locked DLL (LNK1104), out of memory (C1060, exit 137, JS heap), full disk | One hint on the first failure, once per session; `hints: false` turns them off | T hints |
+| 93 | A long build hits the shell timeout | Hint; not a repeated error; the same-command stop at 6 still applies. A test that times out still stops at 3 | T timeouts |
+| 94 | A build timeout followed by a test timeout with the same message | Counts don't carry over | T timeouts |
+| 95 | Editing `*.generated.h`, `Intermediate/`, `*.pb.go`, `node_modules/`, `target/debug/` | One warning per file per session; `generatedFiles: "off"` | T generated |
+| 96 | MSBuild `2>` prefixes, `[proj.vcxproj]` suffixes, errors repeated in the summary | Stripped and de-duplicated | T MSBuild |
+| 97 | Windows paths with spaces, a different drive or user folder on another machine | Only the file name is kept | T Windows paths |
+| 98 | `/WX` and C2220: the warning is the real error | The promoted warnings are kept | T C2220 |
+| 99 | Localised compilers | "Error" in 15+ languages, full-width colons | T localised |
+| 100 | turbo, pnpm -r, docker compose line prefixes | Stripped before matching | T monorepo, prefixed |
+| 101 | Kotlin, Maven, Swift, mypy, Bazel, pyright, Apple ld | Covered by patterns | T formats |
+| 102 | A 6 MB to 19 MB build log with the error on the last line | Found. 284 ms for a whole hook process on 19 MB | T huge log, measured |
+| 103 | Output over 50 KB that is not a build log | Keeps the head and the tail, so an error at the end still counts | T generic >50k |
+| 104 | One 200 KB template-error line; pathological regex input | Lines cut to 4 KB before matching; no backtracking blow-up | T pathological |
+| 105 | Thousands of errors | At most 500 diagnostics in a fingerprint | T cap |
+| 106 | PowerShell tool, `$LASTEXITCODE`, `%ERRORLEVEL%`, `Select-Object -Last`, `tee` | Same as Bash | T PowerShell, normalization |
+| 107 | Upgrading from v0.2 | Ordinary output keeps its exact hash (21-case frozen corpus). A remembered build failure gets a new fingerprint once. `fingerprint: "legacy"` restores v0.2 hashing | T compat, legacy |
+
 ## Known limits (not fixable from a hook)
 
 - Edit validation failures ("string not found") never reach hooks (#17).
@@ -116,3 +153,6 @@ Every case we found, what doom-loop-guard does, and the test that proves it. Tes
 - A command whose output is genuinely random every run (random seeds in messages) defeats the same-error rule; the same-command counter still catches it at 6.
 - `cmd || true` and similar masks that don't print the exit status can't be recovered.
 - Node.js must be on the PATH where Claude Code runs hooks.
+- A build log in a format we don't know falls back to the generic normalizer. It still handles moved lines in most formats, but not reordered parallel output. Captured logs from new toolchains are the fix: add one as a fixture and a pattern.
+- The Unreal, MSVC, MSBuild and Xcode fixtures are built from documented formats, not captured from real builds, because those toolchains can't run in this CI.
+- In a live run, Claude Code 2.1.332 moved a timed-out command to the background and sent no failure event. The timeout handling (#93) applies whenever a timeout does arrive as a failure.

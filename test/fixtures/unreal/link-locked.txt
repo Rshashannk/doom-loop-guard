@@ -1,0 +1,6 @@
+Exit code 6
+Building 2 actions with 2 processes...
+[1/2] Link [x64] UnrealEditor-ShooterGame.dll
+LINK : fatal error LNK1104: cannot open file 'C:\Users\dev\Projects\ShooterGame\Binaries\Win64\UnrealEditor-ShooterGame.dll'
+Result: Failed (OtherCompilationError)
+Total execution time: 3.90 seconds

@@ -1,0 +1,4 @@
+Exit code 1
+/usr/bin/ld: /tmp/ccyqhxXF.o: in function `main':
+c.cpp:(.text+0x9): undefined reference to `foo()'
+collect2: error: ld returned 1 exit status

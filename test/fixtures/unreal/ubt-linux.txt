@@ -1,0 +1,18 @@
+Exit code 6
+Using bundled DotNet SDK version: 8.0.300
+Running UnrealBuildTool: dotnet "../../Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll" ShooterGameEditor Linux Development -Project="/home/dev/Projects/ShooterGame/ShooterGame.uproject"
+Log file: /home/dev/.config/Epic/UnrealBuildTool/Log.txt
+Using clang version '16.0.6' (string), 16 (major), 0 (minor), 6 (patch)
+Building 5 actions with 8 processes...
+[1/5] Compile [x64] ShooterCharacter.cpp
+/home/dev/Projects/ShooterGame/Source/ShooterGame/Private/ShooterCharacter.cpp:142:5: error: use of undeclared identifier 'AmmoCount'
+  142 |     AmmoCount -= 1;
+      |     ^
+1 error generated.
+[2/5] Link (lld) libUnrealEditor-ShooterGame.so
+ld.lld: error: undefined symbol: UWeaponComponent::Reload(int)
+>>> referenced by Module.ShooterGame.2.cpp
+>>>               /home/dev/Projects/ShooterGame/Intermediate/Build/Linux/x64/UnrealEditor/Development/ShooterGame/Module.ShooterGame.2.cpp.o:(AShooterCharacter::Tick(float))
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+Result: Failed (OtherCompilationError)
+Total execution time: 23.40 seconds
