@@ -1,0 +1,11 @@
+{
+  "name": "already-tried",
+  "owner": { "name": "Shashannk", "url": "https://github.com/Rshashannk" },
+  "plugins": [
+    {
+      "name": "already-tried",
+      "source": "./",
+      "description": "Remembers the fixes that already failed, warns on repeats, stops loops, and briefs the next session."
+    }
+  ]
+}
