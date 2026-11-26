@@ -10,6 +10,8 @@ const { loadConfig } = require('../lib/config');
 const store = require('../lib/store');
 const { handle } = require('../lib/engine');
 const { renderReport, REPORT_HEADER } = require('../lib/report');
+const { readUsage } = require('../lib/budget');
+const { appendAudit, buildRecords } = require('../lib/audit');
 
 function logError(env, err) {
   try {
@@ -65,8 +67,13 @@ function run(input, env = process.env, now = new Date().toISOString()) {
   return store.withLock(store.sessionFile(key, env), () => store.withLock(memFile, () => {
     const state = store.loadSession(key, sid, env);
     const memory = store.loadMemory(projectDir);
+    const tokenBudget = cfg.budget.tokens.warn || cfg.budget.tokens.stop;
+    if (input.hook_event_name === 'PreToolUse' && tokenBudget && typeof input.transcript_path === 'string') {
+      try { state.usage = readUsage(input.transcript_path, state.usage); } catch (err) { logError(env, err); }
+    }
     const res = handle(input, {
       state, memory, cfg, now, projectDir,
+      exists: (p) => { try { return fs.statSync(p).isFile(); } catch { return false; } },
       reportPath: path.relative(projectDir, reportPath).split(path.sep).join('/'),
     }) || {};
 
@@ -79,6 +86,11 @@ function run(input, env = process.env, now = new Date().toISOString()) {
     }
     if (res.memoryChanged || res.stop) {
       try { store.saveMemory(projectDir, memory, cfg.memoryDays); } catch (err) { logError(env, err); }
+    }
+    if (cfg.audit && res.events && res.events.length) {
+      try {
+        appendAudit(cfg.auditFile, buildRecords(res.events, { now, sid, agentId: input.agent_id, projectDir, state, cfg }));
+      } catch (err) { logError(env, err); }
     }
     try { store.saveSession(key, state, env); } catch (err) { logError(env, err); }
     return res.output || null;

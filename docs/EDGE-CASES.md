@@ -83,10 +83,36 @@ Every case we found, what doom-loop-guard does, and the test that proves it. Tes
 | 54 | Speed | About 35 ms per hook call (median, Linux); runs on every tool call because of the stop workaround | measured |
 | 55 | Windows paths and line endings | Backslash paths normalised, CRLF handled; CI runs on Windows, macOS and Linux | normalize tests, CI matrix |
 
+## v0.2: rewrites, identical calls, budgets, policy, audit
+
+| # | Case | Handling | Test |
+| --- | --- | --- | --- |
+| 57 | Write creates a new file | Not churn. Only `tool_response.type: "update"` counts (verified live) | V02 |
+| 58 | `tool_response.type` missing | Falls back to whether the file existed at PreToolUse | V03 |
+| 59 | Rewrites of docs (.md) | Still counted. The cost is the same whatever the file type | V02 |
+| 60 | Our own report or state files rewritten | Never counted | engine `rewriteChurn` |
+| 61 | Same call with JSON keys in a different order | Same call (stable key order before hashing) | V06 |
+| 62 | Two calls alternating (`cat a`, `npm test`) | Never counted: only consecutive identical calls count | V06 |
+| 63 | Polling with `sleep` | Ignored commands neither count nor build a streak | V07 |
+| 64 | Claude Code writes one transcript line per content block | Each message id is counted once | V08 |
+| 65 | Half-written last transcript line | Left for the next hook call | V08 |
+| 66 | Transcript replaced, truncated, or rewritten at the same size | Detected by size and by the first 128 bytes, then counted from zero | V09 |
+| 67 | Transcript missing, a directory, or garbage lines | The budget reads 0 for that line or file. The hook never fails | V08, V12 |
+| 68 | Transcript of 100+ MB on resume | At most 8 MB read per hook call; the rest is read on later calls | `lib/budget.js` |
+| 69 | User says "keep going" after a budget stop | The next stop comes at the next multiple of the limit | V10 |
+| 70 | Transcript flushed after the hook runs | The count lags by about one turn (seen in QA). It is acceptable for a bound | ENTERPRISE.md |
+| 71 | Policy locked, but `DOOM_LOOP_GUARD=off`, `.doom-loop-guard-off`, or a repo setting `mode: warn` | All ignored | V13 |
+| 72 | Policy file is broken JSON | Defaults apply. A broken system file still blocks the env path | V14 |
+| 73 | A repo tries to redirect the audit log | Only policy and user config can set `auditFile`. Relative paths are rejected | V15 |
+| 74 | Secrets in an error that triggered a stop | Redacted in the audit `why` | V16 |
+| 75 | Audit file over 10 MB | Renamed to `.1`, and a new file is started | V17 |
+| 76 | Audit path not writable | Logged to errors.log. The warning still reaches Claude | V17 |
+| 77 | Tests writing to the real home folder | Every test sets `HOME` to a temp folder | all suites |
+
 ## Known limits (not fixable from a hook)
 
 - Edit validation failures ("string not found") never reach hooks (#17).
-- Loops that never produce a tool error, such as the model repeating "let me write the file" without calling a tool, are invisible to tool hooks.
+- Loops with no tool calls at all, such as the model repeating "let me write the file" without calling a tool, are invisible to tool hooks. Loops that do call tools but never error are now bounded by `sameCall` and the budgets.
 - A command whose output is genuinely random every run (random seeds in messages) defeats the same-error rule; the same-command counter still catches it at 6.
 - `cmd || true` and similar masks that don't print the exit status can't be recovered.
 - Node.js must be on the PATH where Claude Code runs hooks.

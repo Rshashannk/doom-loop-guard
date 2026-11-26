@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 (unreleased)
+
+- Rewrite churn: warns when the same existing file is fully rewritten with Write 3 times in a session (`rewriteChurn`, optional stop).
+- Identical calls: the same tool call with the same input 5 times in a row warns, and 10 stops, even with no error (`sameCall`).
+- Session budgets for tokens (read incrementally from the transcript) and tool calls (`budget`). Off by default; each further stop comes at the next multiple of the limit.
+- Admin policy file next to Claude Code's managed-settings.json. It wins over user and repo config. With `"lock": true`, the off switches and warn mode are ignored.
+- Local JSONL audit log of every warning, block and stop, rotated at 10 MB, plus `scripts/stats.js` to summarize it.
+- `docs/ENTERPRISE.md` with managed-settings examples for force-enabling the plugin.
+
 ## 0.1.0 (unreleased)
 
 - Same-error detection with a normalized error hash: warn at 2, stop at 3.
