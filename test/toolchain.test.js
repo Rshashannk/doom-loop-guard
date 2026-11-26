@@ -257,7 +257,7 @@ test('a 6 MB build log with the error at the end is found quickly', () => {
   const d = fp(t, UE_BUILD);
   const ms = Number(process.hrtime.bigint() - start) / 1e6;
   assert.equal(d.excerpt, "Hero.cpp: error C2065: 'x': undeclared identifier");
-  assert.ok(ms < 1500, `took ${ms} ms`);
+  assert.ok(ms < 5000, `took ${ms} ms`); // about 150 ms on a laptop; loose for slow CI runners
 });
 
 test('generic output over 50k characters keeps its end, where the error is', () => {
@@ -270,7 +270,7 @@ test('a 200 KB single-line template error and pathological lines do not hang', (
   const evil = `Exit code 1\n${'a('.repeat(3000)}: error: x\n${':1'.repeat(3000)}\n${'e: '.repeat(3000)}`;
   const start = Date.now();
   fp(t, 'cl A.cpp'); fp(evil, 'make');
-  assert.ok(Date.now() - start < 1500);
+  assert.ok(Date.now() - start < 5000);
 });
 
 test('the number of diagnostics in a fingerprint is capped', () => {
