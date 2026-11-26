@@ -44,9 +44,9 @@ Build output is where loop detectors usually fail. Parallel jobs print errors in
 | --- | --- |
 | Game engines | Unreal Engine (UnrealBuildTool, UnrealHeaderTool, RunUAT, editor automation tests, Live Coding), Unity and Godot C# |
 | Native | MSVC, MSBuild, clang-cl, gcc, clang, nvcc, Make, Ninja, CMake, Bazel; MSVC, GNU, LLVM and Apple linkers |
-| Languages | Rust (cargo), Go, Java and Kotlin (javac, Gradle, Maven), C#/.NET, Swift and Xcode, TypeScript (tsc), Python (mypy, pyright) |
+| Languages | Rust (cargo, clippy), Go (build, vet, test), Java and Kotlin (javac, Gradle, Maven), C#/.NET, Swift and Xcode, TypeScript (tsc, ESLint, webpack), Python (mypy, pyright) |
 | Test runners | jest, vitest, pytest, cargo test, go test, node:test (code frames and timings ignored) |
-| Monorepos | turbo, nx, pnpm and docker compose line prefixes |
+| Monorepos | turbo, nx, pnpm and docker compose line prefixes; the same error in several packages counts per package |
 | Platforms | Windows (paths with spaces, CRLF, PowerShell, `$LASTEXITCODE`), macOS, Linux; compilers localised to German, French, Japanese and more |
 
 It also tells Claude, on the first failure, when retrying cannot help: Unreal's Live Coding blocking a build, a DLL locked by a running editor, the build running out of memory, or a full disk. It warns before Claude edits a generated file (`*.generated.h`, `*.pb.go`, `node_modules/`) that the next build would overwrite. A build that hits the shell timeout is not treated as a repeated error, because a rerun continues where it stopped.

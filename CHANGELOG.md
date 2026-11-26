@@ -10,6 +10,7 @@
 - A build that hits the shell timeout no longer counts as a repeated error.
 - Huge logs: the whole output is scanned for diagnostics, and the generic normalizer keeps the end of long output, where the error usually is.
 - Windows: the PowerShell tool, `$LASTEXITCODE`, `%ERRORLEVEL%`, `Select-Object -Last` and `tee` are handled.
+- Monorepos: the same error in several packages, or several times in one file, is counted per occurrence, so fixing one is progress. ESLint, clippy and webpack formats are recognised.
 - Ordinary output keeps its v0.2 fingerprint. `fingerprint: "legacy"` restores v0.2 hashing.
 
 ## 0.2.0 (unreleased)

@@ -50,6 +50,11 @@ const SAME = [
   ['tsc file(line,col), lines moved', 'tsc-pretty.txt', 'tsc-pretty.shifted.txt', 'tsc --noEmit'],
   ['jest code frame, lines moved, "estimated" time', 'jest.txt', 'jest.shifted.txt', 'npx jest'],
   ['pytest, lines moved', 'pytest.txt', 'pytest.shifted.txt', 'pytest'],
+  ['ESLint stylish, lines moved', 'eslint.txt', 'eslint.shifted.txt', 'npx eslint src'],
+  ['mypy, lines moved', 'mypy.txt', 'mypy.shifted.txt', 'python3 -m mypy m.py'],
+  ['CMake + make -k -j8, 300 files, 36 errors in 4 libraries, two runs', 'make-big-k-1.txt', 'make-big-k-2.txt', 'cmake --build out -j8 -- -k'],
+  ['CMake + ninja -k 0 -j8, 300 files, 36 errors, two runs', 'ninja-big-k-1.txt', 'ninja-big-k-2.txt', 'ninja -C out -k 0'],
+  ['cargo clippy -D warnings (error without a code), lines moved', 'clippy.txt', 'clippy.shifted.txt', 'cargo clippy -- -D warnings'],
   ['cargo test, thread id changes every run', 'cargo-test-b.txt', 'cargo-test-b.rerun.txt', 'cargo test'],
 ];
 for (const [name, a, b, cmd] of SAME) {
@@ -57,6 +62,22 @@ for (const [name, a, b, cmd] of SAME) {
     assert.equal(fp(real(a), cmd).hash, fp(real(b), cmd).hash);
   });
 }
+
+test('ESLint shows the file and rule; the v0.2 hash missed the moved lines', () => {
+  assert.equal(fp(real('eslint.txt'), 'npx eslint src').excerpt, "src/a/index.js: error: 'x' is assigned a value but never used (no-unused-vars)");
+  assert.notEqual(fp(real('eslint.txt'), 'npx eslint src', { fingerprint: 'legacy' }).hash, fp(real('eslint.shifted.txt'), 'npx eslint src', { fingerprint: 'legacy' }).hash);
+});
+
+test('the big CMake build reports all 36 errors, each in its own library', () => {
+  const d = tc.extractDiagnostics(real('make-big-k-1.txt'));
+  assert.equal(d.lines.length, 36);
+  assert.ok(d.lines.some((l) => l.startsWith('net/src/')) && d.lines.some((l) => l.startsWith('audio/src/')));
+});
+
+test('syntax errors from interpreters keep the v0.2 path', () => {
+  assert.equal(fp(real('python-syntax.txt'), 'python3 syn.py').diagnostics, false);
+  assert.equal(fp(real('node-syntax.txt'), 'node syn.js').diagnostics, false);
+});
 
 test('different failures stay different', () => {
   assert.notEqual(fp(real('cargo-test-a.txt'), 'cargo test').hash, fp(real('cargo-test-b.txt'), 'cargo test').hash);
@@ -71,9 +92,21 @@ test('fixing one of several errors is progress, not a repeat', () => {
   assert.notEqual(fp(all, 'make').hash, fp(fewer, 'make').hash);
 });
 
+test('monorepo: the same error in several packages is not one error (fixing one package is progress)', () => {
+  const pk = (ps) => `Exit code 2\n${ps.map((p) => `packages/${p}/src/index.ts(1,20): error TS2307: Cannot find module '@acme/util'.`).join('\n')}`;
+  assert.notEqual(fp(pk(['a', 'b', 'c']), 'tsc -b').hash, fp(pk(['a', 'b']), 'tsc -b').hash);
+  assert.equal(fp(pk(['a', 'b']), 'tsc -b').hash, fp(pk(['b', 'a']), 'tsc -b').hash);
+});
+
+test('the same error several times in one file: fixing one occurrence is progress', () => {
+  const one = (n) => `Exit code 2\n${Array.from({ length: n }, (_, i) => `src/a.ts(${i * 10 + 1},5): error TS2304: Cannot find name 'foo'.`).join('\n')}`;
+  assert.notEqual(fp(one(5), 'tsc').hash, fp(one(4), 'tsc').hash);
+  assert.equal(fp(one(4), 'tsc').hash, fp(one(4).replace(/\((\d+),5\)/g, (m, n) => `(${Number(n) + 3},5)`), 'tsc').hash);
+});
+
 test('excerpt is the first real diagnostic, not a progress line', () => {
   assert.equal(fp(real('ninja.txt'), 'ninja').excerpt, 'a.cpp: fatal error: missing_header.h: No such file or directory');
-  assert.equal(fp(real('cargo-build.txt'), 'cargo build').excerpt, 'main.rs: error E0425: cannot find value `y` in this scope');
+  assert.equal(fp(real('cargo-build.txt'), 'cargo build').excerpt, 'src/main.rs: error E0425: cannot find value `y` in this scope');
   assert.equal(fp(real('tsc-pretty.txt'), 'tsc').excerpt, "a.ts: error TS2322: Type 'string' is not assignable to type 'number'.");
   assert.equal(fp(real('gcc-link.txt'), 'g++ c.cpp').excerpt, "c.cpp: error: undefined reference to `foo()'");
 });
@@ -85,7 +118,7 @@ test('Unreal UBT on Windows: order, action counts, timings and line numbers do n
   const b = fp(ue('ubt-win-run2.txt'), UE_BUILD);
   assert.equal(a.diagnostics, true);
   assert.equal(a.hash, b.hash);
-  assert.equal(a.excerpt, "ShooterCharacter.cpp: error C2065: 'AmmoCount': undeclared identifier");
+  assert.equal(a.excerpt, "ShooterGame/Private/ShooterCharacter.cpp: error C2065: 'AmmoCount': undeclared identifier");
   assert.notEqual(fp(ue('ubt-win-run3-progress.txt'), UE_BUILD).hash, a.hash, 'one error fixed is progress');
   assert.doesNotMatch(a.detail, /note:|warning C4996|Result: Failed|\[\d+\/\d+\]/);
 });
@@ -135,22 +168,26 @@ test('Unreal log prefix and unity file numbers are stripped by the generic norma
 
 // ---------- MSVC / MSBuild / dotnet / Windows ----------
 
-test('MSBuild multi-process prefixes, project suffixes and duplicated summaries', () => {
-  const run1 = 'Exit code 1\n  2>Foo.cpp\n  2>C:\\src\\app\\Foo.cpp(12,5): error C2065: \'x\': undeclared identifier [C:\\src\\app\\app.vcxproj]\n'
-    + '  3>Bar.cs(7,20): error CS0103: The name \'y\' does not exist in the current context [C:\\src\\lib\\lib.csproj]\nBuild FAILED.\n'
-    + '  C:\\src\\app\\Foo.cpp(12,5): error C2065: \'x\': undeclared identifier [C:\\src\\app\\app.vcxproj]\n    2 Error(s)\nTime Elapsed 00:00:04.12';
-  const run2 = 'Exit code 1\n  1>Bar.cs(9,20): error CS0103: The name \'y\' does not exist in the current context [D:\\a\\lib\\lib.csproj]\n'
-    + '  4>D:\\a\\app\\Foo.cpp(15,5): error C2065: \'x\': undeclared identifier [D:\\a\\app\\app.vcxproj]\nBuild FAILED.\n    2 Error(s)\nTime Elapsed 00:00:09.87';
+test('MSBuild multi-process prefixes, project suffixes and the error summary', () => {
+  // MSBuild prints each error while building and again in the summary after "Build FAILED."
+  const run1 = 'Exit code 1\n  2>Foo.cpp\n  2>C:\\src\\acme\\app\\Foo.cpp(12,5): error C2065: \'x\': undeclared identifier [C:\\src\\acme\\app\\app.vcxproj]\n'
+    + '  3>Bar.cs(7,20): error CS0103: The name \'y\' does not exist in the current context [C:\\src\\acme\\lib\\lib.csproj]\nBuild FAILED.\n\n'
+    + '"C:\\src\\acme\\app.sln" (default target) (1) ->\n  C:\\src\\acme\\app\\Foo.cpp(12,5): error C2065: \'x\': undeclared identifier [C:\\src\\acme\\app\\app.vcxproj]\n'
+    + '  Bar.cs(7,20): error CS0103: The name \'y\' does not exist in the current context [C:\\src\\acme\\lib\\lib.csproj]\n    0 Warning(s)\n    2 Error(s)\nTime Elapsed 00:00:04.12';
+  const run2 = 'Exit code 1\n  1>Bar.cs(9,20): error CS0103: The name \'y\' does not exist in the current context [D:\\a\\acme\\lib\\lib.csproj]\n'
+    + '  4>D:\\a\\acme\\app\\Foo.cpp(15,5): error C2065: \'x\': undeclared identifier [D:\\a\\acme\\app\\app.vcxproj]\nBuild FAILED.\n\n'
+    + '"D:\\a\\acme\\app.sln" (default target) (1) ->\n  Bar.cs(9,20): error CS0103: The name \'y\' does not exist in the current context [D:\\a\\acme\\lib\\lib.csproj]\n'
+    + '  D:\\a\\acme\\app\\Foo.cpp(15,5): error C2065: \'x\': undeclared identifier [D:\\a\\acme\\app\\app.vcxproj]\n    0 Warning(s)\n    2 Error(s)\nTime Elapsed 00:00:09.87';
   const a = fp(run1, 'msbuild app.sln /m');
   assert.equal(a.hash, fp(run2, 'msbuild app.sln /m').hash);
-  assert.equal(a.excerpt, "Foo.cpp: error C2065: 'x': undeclared identifier");
+  assert.equal(a.excerpt, "acme/app/Foo.cpp: error C2065: 'x': undeclared identifier");
 });
 
 test('Windows paths with spaces, and a drive letter change between machines', () => {
   const a = "Exit code 2\nC:\\Program Files\\My Game\\Source\\Game\\Hero.cpp(10): error C2143: syntax error: missing ';' before '}'";
   const b = "Exit code 2\nE:\\Work Area\\My Game\\Source\\Game\\Hero.cpp(11): error C2143: syntax error: missing ';' before '}'";
   assert.equal(fp(a, 'cl /c Hero.cpp').hash, fp(b, 'cl /c Hero.cpp').hash);
-  assert.equal(fp(a, 'cl /c Hero.cpp').excerpt, "Hero.cpp: error C2143: syntax error: missing ';' before '}'");
+  assert.equal(fp(a, 'cl /c Hero.cpp').excerpt, "Source/Game/Hero.cpp: error C2143: syntax error: missing ';' before '}'");
 });
 
 test('warnings promoted to errors (C2220, /WX) keep the warning that caused them', () => {
@@ -190,7 +227,7 @@ test('prefixed lines that only match after the prefix is removed (rust, go)', ()
   assert.equal(fp(a, 'docker compose run api go build ./...').excerpt, 'main.go: error: undefined: y');
   assert.equal(fp(a, 'docker compose run api go build ./...').hash, fp(b, 'docker compose run api go build ./...').hash);
   const r = 'Exit code 1\ncore:build: error[E0425]: cannot find value `y` in this scope\ncore:build:  --> src/lib.rs:1:46';
-  assert.equal(fp(r, 'turbo run build').excerpt, 'lib.rs: error E0425: cannot find value `y` in this scope');
+  assert.equal(fp(r, 'turbo run build').excerpt, 'src/lib.rs: error E0425: cannot find value `y` in this scope');
 });
 
 test('generic normalizer: linker temp objects and code-frame gutters', () => {
@@ -202,12 +239,12 @@ test('generic normalizer: linker temp objects and code-frame gutters', () => {
 
 test('Kotlin, Maven, Swift, mypy, Bazel and pyright formats', () => {
   const cases = [
-    ['./gradlew build', 'e: file:///w/app/src/Main.kt:12:5 Unresolved reference: foo', 'Main.kt: error: Unresolved reference: foo'],
-    ['mvn compile', '[ERROR] /w/src/main/java/Foo.java:[12,5] cannot find symbol', 'Foo.java: error: cannot find symbol'],
-    ['swift build', "/w/Sources/App/main.swift:3:1: error: cannot find 'x' in scope", "main.swift: error: cannot find 'x' in scope"],
-    ['mypy .', 'app/models.py:12: error: Incompatible return value type (got "str", expected "int")  [return-value]', 'models.py: error: Incompatible return value type (got "str", expected "int") [return-value]'],
-    ['bazel build //app', 'ERROR: /w/app/BUILD:12:8: Compiling app/main.cc failed: (Exit 1): gcc failed: error executing command', 'BUILD: error: Compiling app/main.cc failed: (Exit 1): gcc failed: error executing command'],
-    ['pyright', '  /w/app/x.py:4:7 - error: "foo" is not defined (reportUndefinedVariable)', 'x.py: error: "foo" is not defined (reportUndefinedVariable)'],
+    ['./gradlew build', 'e: file:///w/app/src/Main.kt:12:5 Unresolved reference: foo', 'app/src/Main.kt: error: Unresolved reference: foo'],
+    ['mvn compile', '[ERROR] /w/src/main/java/Foo.java:[12,5] cannot find symbol', 'main/java/Foo.java: error: cannot find symbol'],
+    ['swift build', "/w/Sources/App/main.swift:3:1: error: cannot find 'x' in scope", "Sources/App/main.swift: error: cannot find 'x' in scope"],
+    ['mypy .', 'app/models.py:12: error: Incompatible return value type (got "str", expected "int")  [return-value]', 'app/models.py: error: Incompatible return value type (got "str", expected "int") [return-value]'],
+    ['bazel build //app', 'ERROR: /w/app/BUILD:12:8: Compiling app/main.cc failed: (Exit 1): gcc failed: error executing command', 'w/app/BUILD: error: Compiling app/main.cc failed: (Exit 1): gcc failed: error executing command'],
+    ['pyright', '  /w/app/x.py:4:7 - error: "foo" is not defined (reportUndefinedVariable)', 'w/app/x.py: error: "foo" is not defined (reportUndefinedVariable)'],
   ];
   for (const [cmd, line, want] of cases) assert.equal(fp(`Exit code 1\n${line}`, cmd).excerpt, want, cmd);
 });
@@ -233,6 +270,29 @@ test('a message ending in ":" keeps its next lines, so changed values still diff
   assert.match(fp(t(3), 'make test').excerpt, /Which is: 3/);
 });
 
+test('non-build failures under build-like commands keep their values (no false repeats)', () => {
+  const cases = [
+    ['./gradlew test', (v) => `Exit code 1\n> Task :app:test FAILED\nFooTest > adds() FAILED\n    org.opentest4j.AssertionFailedError: expected: <4> but was: <${v}>\n        at app//FooTest.adds(FooTest.java:12)\n\nFAILURE: Build failed with an exception.\n* What went wrong:\nExecution failed for task ':app:test'.\nBUILD FAILED in 4s`],
+    ['dotnet test', (v) => `Exit code 1\n  Failed Calc.Tests.Adds [3 ms]\n  Error Message:\n   Assert.Equal() Failure: Values differ\nExpected: 4\nActual:   ${v}\n  Stack Trace:\n     at Calc.Tests.Adds() in /app/Tests.cs:line 12\nFailed!  - Failed:     1, Passed:     0`],
+    ['npm run build', (v) => `Exit code 1\nvite v5.4.0 building for production...\nerror during build:\n[vite]: Rollup failed to resolve import "${v}" from "/app/src/main.ts".`],
+    ['npm run build', (v) => `Exit code 1\nFailed to compile.\n\n./src/app/page.tsx:3:1\nType error: Cannot find name '${v}'.\n\n> 3 | ${v}()\n    | ^`],
+    ['docker build .', (v) => `Exit code 1\n#9 [4/6] RUN npm ci\n#9 2.315 npm ERR! 404 Not Found - GET https://registry.npmjs.org/${v}\n#9 ERROR: process "/bin/sh -c npm ci" did not complete successfully: exit code: 1\nERROR: failed to solve: process "/bin/sh -c npm ci" did not complete successfully: exit code: 1`],
+    ['make test', (v) => `Exit code 2\npython -m pytest\nE       assert ${v} == 4\ntests/test_m.py:5: AssertionError\nmake: *** [Makefile:3: test] Error 1`],
+    ['bun run build', (v) => `Exit code 1\nAssertionError: expected 3 got ${v}\nerror: script "build" exited with code 1`],
+    ['cargo build', (v) => `Exit code 101\nerror: failed to select a version for the requirement \`serde = "^${v}"\``],
+  ];
+  for (const [cmd, out] of cases) {
+    assert.notEqual(fp(out('3'), cmd).hash, fp(out('5'), cmd).hash, cmd);
+    assert.equal(fp(out('3'), cmd).hash, fp(out('3'), cmd).hash, cmd);
+  }
+});
+
+test('webpack "ERROR in" keeps the message from the following line', () => {
+  const w = (mod, line) => `Exit code 1\nERROR in ./src/index.js ${line}:0-24\nModule not found: Error: Can't resolve './${mod}' in '/app/src'\n\nwebpack 5.90.0 compiled with 1 error in 312 ms`;
+  assert.equal(fp(w('missing', 3), 'npm run build').hash, fp(w('missing', 9), 'npm run build').hash);
+  assert.notEqual(fp(w('missing', 3), 'npm run build').hash, fp(w('other', 3), 'npm run build').hash);
+});
+
 test('cargo test failures are not reduced to "error: test failed"', () => {
   assert.equal(tc.signature(real('cargo-test-a.txt'), 'cargo test'), null);
 });
@@ -256,7 +316,7 @@ test('a 6 MB build log with the error at the end is found quickly', () => {
   const start = process.hrtime.bigint();
   const d = fp(t, UE_BUILD);
   const ms = Number(process.hrtime.bigint() - start) / 1e6;
-  assert.equal(d.excerpt, "Hero.cpp: error C2065: 'x': undeclared identifier");
+  assert.equal(d.excerpt, "p/Source/Hero.cpp: error C2065: 'x': undeclared identifier");
   assert.ok(ms < 5000, `took ${ms} ms`); // about 150 ms on a laptop; loose for slow CI runners
 });
 

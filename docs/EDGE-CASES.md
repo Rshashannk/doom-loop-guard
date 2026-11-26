@@ -144,6 +144,15 @@ Fixtures: `test/fixtures/toolchains/` holds real output captured from gcc 13, cl
 | 104 | One 200 KB template-error line; pathological regex input | Lines cut to 4 KB before matching; no backtracking blow-up | T pathological |
 | 105 | Thousands of errors | At most 500 diagnostics in a fingerprint | T cap |
 | 106 | PowerShell tool, `$LASTEXITCODE`, `%ERRORLEVEL%`, `Select-Object -Last`, `tee` | Same as Bash | T PowerShell, normalization |
+| 108 | Monorepo: the same error in several packages (`packages/a/src/index.ts`, `packages/b/src/index.ts`) | Files are identified by their last 3 path segments, so fixing one package is progress | T monorepo |
+| 109 | The same error several times in one file | Each diagnostic is counted, so fixing one occurrence is progress | T same file |
+| 110 | CMake build, 300 files, 36 errors in 4 libraries, with `make -k -j8` or `ninja -k 0` | Same fingerprint on every rerun (v0.2: different on every run) | T big CMake |
+| 111 | `make -j` or `ninja` without `-k` stop at the first failures, and which files fail first varies | Each run can see a different set of errors, so the same-command rule (warn at 4, stop at 6) is what bounds it | known limit, measured |
+| 112 | ESLint "stylish" output (`  12:5  error  msg  rule`) | File header + rule kept, line numbers dropped | T ESLint |
+| 113 | rustc/clippy `error: …` without a code | Counted only when a ` --> file:line` line follows, so a bare `error: script "build" exited` never hides the real output | T clippy, non-build |
+| 114 | webpack `ERROR in ./src/x.js 3:0-24` with the message on the next line | Message joined to the location | T webpack |
+| 115 | Test failures under build-like commands (gradle test, dotnet test, make test, vite, Next.js, docker build, bun) | No diagnostics mode; changed values still give a new fingerprint | T non-build |
+| 116 | 19 MB log where every line is an error (210k diagnostics) | Stops examining after 5,000 diagnostics; 340 ms for a whole hook process | measured |
 | 107 | Upgrading from v0.2 | Ordinary output keeps its exact hash (21-case frozen corpus). A remembered build failure gets a new fingerprint once. `fingerprint: "legacy"` restores v0.2 hashing | T compat, legacy |
 
 ## Known limits (not fixable from a hook)
@@ -153,6 +162,7 @@ Fixtures: `test/fixtures/toolchains/` holds real output captured from gcc 13, cl
 - A command whose output is genuinely random every run (random seeds in messages) defeats the same-error rule; the same-command counter still catches it at 6.
 - `cmd || true` and similar masks that don't print the exit status can't be recovered.
 - Node.js must be on the PATH where Claude Code runs hooks.
+- `make -j` and `ninja` without `-k` stop after the first failures, and which files fail first changes between runs, so the error set changes too (#111). The same-command rule still stops the loop at 6. With `-k`, the fingerprint is stable.
 - A build log in a format we don't know falls back to the generic normalizer. It still handles moved lines in most formats, but not reordered parallel output. Captured logs from new toolchains are the fix: add one as a fixture and a pattern.
 - The Unreal, MSVC, MSBuild and Xcode fixtures are built from documented formats, not captured from real builds, because those toolchains can't run in this CI.
 - In a live run, Claude Code 2.1.332 moved a timed-out command to the background and sent no failure event. The timeout handling (#93) applies whenever a timeout does arrive as a failure.

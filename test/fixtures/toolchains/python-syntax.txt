@@ -1,0 +1,5 @@
+Exit code 1
+  File "/home/dev/py2/syn.py", line 1
+    def f(:
+          ^
+SyntaxError: invalid syntax
