@@ -1,0 +1,20 @@
+Exit code 2
+g++ -c a.cpp -o a.o
+g++ -c b.cpp -o b.o
+a.cpp:1:10: fatal error: missing_header.h: No such file or directory
+    1 | #include "missing_header.h"
+      |          ^~~~~~~~~~~~~~~~~~
+compilation terminated.
+b.cpp: In function 'int b()':
+b.cpp:1:18: error: 'undeclared_b' was not declared in this scope
+    1 | int b() { return undeclared_b + "x" * 2; }
+      |                  ^~~~~~~~~~~~
+b.cpp:1:37: error: invalid operands of types 'const char [2]' and 'int' to binary 'operator*'
+    1 | int b() { return undeclared_b + "x" * 2; }
+      |                                 ~~~ ^ ~
+      |                                 |     |
+      |                                 |     int
+      |                                 const char [2]
+make: *** [Makefile:3: a.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [Makefile:3: b.o] Error 1

@@ -1,0 +1,10 @@
+Exit code 1
+
+/home/dev/js/src/a/index.js
+  1:7   error  'x' is assigned a value but never used  no-unused-vars
+  2:24  error  'y' is not defined                      no-undef
+
+/home/dev/js/src/b/index.js
+  1:24  error  'y' is not defined  no-undef
+
+✖ 3 problems (3 errors, 0 warnings)

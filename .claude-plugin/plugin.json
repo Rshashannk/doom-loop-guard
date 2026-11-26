@@ -1,7 +1,7 @@
 {
   "name": "doom-loop-guard",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Remembers the fixes that already failed. Warns Claude when it repeats one, stops loops, and briefs the next session on what not to try again.",
   "license": "MIT",
-  "keywords": ["loop", "hooks", "debugging", "memory", "agents"]
+  "keywords": ["loop", "hooks", "debugging", "memory", "agents", "build", "unreal-engine", "msvc", "cpp"]
 }

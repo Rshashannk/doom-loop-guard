@@ -1,0 +1,25 @@
+Exit code 1
+FAIL ./sum.test.js
+  ✕ adds (3 ms)
+
+  ● adds
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 4
+    Received: 3
+
+      1 | const sum = require('./sum');
+      2 | test('adds', () => {
+    > 3 |   expect(sum(1, 2)).toBe(4);
+        |                     ^
+      4 | });
+      5 |
+
+      at Object.toBe (sum.test.js:3:21)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        0.208 s
+Ran all test suites.

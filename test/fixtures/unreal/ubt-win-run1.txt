@@ -1,0 +1,30 @@
+Exit code 6
+Using bundled DotNet SDK version: 8.0.300
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" ShooterGameEditor Win64 Development -Project="C:\Users\dev\Projects\ShooterGame\ShooterGame.uproject" -WaitMutex -FromMsBuild
+Log file: C:\Users\dev\AppData\Local\UnrealBuildTool\Log.txt
+Creating makefile for ShooterGameEditor (no existing makefile)
+Parsing headers for ShooterGameEditor
+  Running Internal UnrealHeaderTool C:\Users\dev\Projects\ShooterGame\ShooterGame.uproject C:\Users\dev\Projects\ShooterGame\Intermediate\Build\Win64\ShooterGameEditor\Development\ShooterGameEditor.uhtmanifest -WarningsAsErrors -installed
+Total of 12 written
+Reflection code generated for ShooterGameEditor in 3.1294718 seconds
+Building ShooterGameEditor...
+Using Visual Studio 2022 14.38.33135 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+Determining max actions to execute in parallel (16 physical cores, 32 logical cores)
+  Executing up to 16 processes, one per physical core
+Building 47 actions with 16 processes...
+[1/47] Resource Default.rc2
+[2/47] Compile [x64] SharedPCH.UnrealEd.Project.ValApi.Cpp20.cpp
+[3/47] Compile [x64] Module.ShooterGame.1.cpp
+[4/47] Compile [x64] ShooterCharacter.cpp
+C:\Users\dev\Projects\ShooterGame\Source\ShooterGame\Private\ShooterCharacter.cpp(142): error C2065: 'AmmoCount': undeclared identifier
+C:\Users\dev\Projects\ShooterGame\Source\ShooterGame\Private\ShooterCharacter.cpp(150): error C2039: 'FireWeapon': is not a member of 'AShooterCharacter'
+C:\Users\dev\Projects\ShooterGame\Source\ShooterGame\Public\ShooterCharacter.h(18): note: see declaration of 'AShooterCharacter'
+[5/47] Compile [x64] WeaponComponent.cpp
+C:\Users\dev\Projects\ShooterGame\Source\ShooterGame\Private\WeaponComponent.cpp(77): error C2664: 'void UWeaponComponent::Reload(int32)': cannot convert argument 1 from 'FString' to 'int32'
+C:\Users\dev\Projects\ShooterGame\Source\ShooterGame\Private\WeaponComponent.cpp(77): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Program Files\Epic Games\UE_5.4\Engine\Source\Runtime\Core\Public\Containers\Array.h(1224): warning C4996: 'TArray::Init': deprecated
+[6/47] Compile [x64] Module.ShooterGame.2.cpp
+Total time in Parallel executor: 41.83 seconds
+Total execution time: 52.17 seconds
+Result: Failed (OtherCompilationError)
+Took 52.6s to run UnrealBuildTool.exe, ExitCode=6

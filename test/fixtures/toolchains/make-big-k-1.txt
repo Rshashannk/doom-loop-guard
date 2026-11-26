@@ -1,0 +1,440 @@
+Exit code 2
+[  0%] Building CXX object CMakeFiles/core.dir/core/src/f8.cpp.o
+[  1%] Building CXX object CMakeFiles/net.dir/net/src/f16.cpp.o
+[  1%] Building CXX object CMakeFiles/audio.dir/audio/src/f8.cpp.o
+[  1%] Building CXX object CMakeFiles/core.dir/core/src/f14.cpp.o
+[  1%] Building CXX object CMakeFiles/ui.dir/ui/src/f8.cpp.o
+[  1%] Building CXX object CMakeFiles/net.dir/net/src/f8.cpp.o
+[  1%] Building CXX object CMakeFiles/core.dir/core/src/f15.cpp.o
+[  2%] Building CXX object CMakeFiles/ui.dir/ui/src/f13.cpp.o
+/home/dev/big/core/src/f8.cpp: In function 'int f8()':
+/home/dev/big/core/src/f8.cpp:1:19: error: 'missing_core' was not declared in this scope
+    1 | int f8() { return missing_core; }
+      |                   ^~~~~~~~~~~~
+/home/dev/big/ui/src/f8.cpp: In function 'int f8()':
+/home/dev/big/ui/src/f8.cpp:1:19: error: 'missing_ui' was not declared in this scope
+    1 | int f8() { return missing_ui; }
+      |                   ^~~~~~~~~~
+/home/dev/big/net/src/f8.cpp: In function 'int f8()':
+/home/dev/big/net/src/f8.cpp:1:19: error: 'missing_net' was not declared in this scope
+    1 | int f8() { return missing_net; }
+      |                   ^~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/net.dir/build.make:174: CMakeFiles/net.dir/net/src/f8.cpp.o] Error 1
+/home/dev/big/audio/src/f8.cpp: In function 'int f8()':
+/home/dev/big/audio/src/f8.cpp:1:19: error: 'missing_audio' was not declared in this scope
+    1 | int f8() { return missing_audio; }
+      |                   ^~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/core.dir/build.make:174: CMakeFiles/core.dir/core/src/f8.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:174: CMakeFiles/audio.dir/audio/src/f8.cpp.o] Error 1
+/home/dev/big/net/src/f16.cpp: In function 'int f16()':
+/home/dev/big/net/src/f16.cpp:1:20: error: 'missing_net' was not declared in this scope
+    1 | int f16() { return missing_net; }
+      |                    ^~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:174: CMakeFiles/ui.dir/ui/src/f8.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/net.dir/build.make:286: CMakeFiles/net.dir/net/src/f16.cpp.o] Error 1
+[  3%] Building CXX object CMakeFiles/core.dir/core/src/f16.cpp.o
+[  3%] Building CXX object CMakeFiles/core.dir/core/src/f17.cpp.o
+[  3%] Building CXX object CMakeFiles/ui.dir/ui/src/f14.cpp.o
+/home/dev/big/core/src/f16.cpp: In function 'int f16()':
+/home/dev/big/core/src/f16.cpp:1:20: error: 'missing_core' was not declared in this scope
+    1 | int f16() { return missing_core; }
+      |                    ^~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/core.dir/build.make:286: CMakeFiles/core.dir/core/src/f16.cpp.o] Error 1
+[  3%] Building CXX object CMakeFiles/audio.dir/audio/src/f18.cpp.o
+[  3%] Building CXX object CMakeFiles/net.dir/net/src/f18.cpp.o
+[  3%] Building CXX object CMakeFiles/net.dir/net/src/f17.cpp.o
+[  3%] Building CXX object CMakeFiles/core.dir/core/src/f18.cpp.o
+[  4%] Building CXX object CMakeFiles/audio.dir/audio/src/f16.cpp.o
+[  5%] Building CXX object CMakeFiles/core.dir/core/src/f19.cpp.o
+/home/dev/big/audio/src/f16.cpp: In function 'int f16()':
+/home/dev/big/audio/src/f16.cpp:1:20: error: 'missing_audio' was not declared in this scope
+    1 | int f16() { return missing_audio; }
+      |                    ^~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:286: CMakeFiles/audio.dir/audio/src/f16.cpp.o] Error 1
+[  5%] Building CXX object CMakeFiles/ui.dir/ui/src/f15.cpp.o
+[  6%] Building CXX object CMakeFiles/net.dir/net/src/f19.cpp.o
+[  6%] Building CXX object CMakeFiles/net.dir/net/src/f20.cpp.o
+[  7%] Building CXX object CMakeFiles/audio.dir/audio/src/f19.cpp.o
+[  7%] Building CXX object CMakeFiles/net.dir/net/src/f21.cpp.o
+[  7%] Building CXX object CMakeFiles/core.dir/core/src/f20.cpp.o
+[  7%] Building CXX object CMakeFiles/audio.dir/audio/src/f20.cpp.o
+[  8%] Building CXX object CMakeFiles/ui.dir/ui/src/f16.cpp.o
+/home/dev/big/ui/src/f16.cpp: In function 'int f16()':
+/home/dev/big/ui/src/f16.cpp:1:20: error: 'missing_ui' was not declared in this scope
+    1 | int f16() { return missing_ui; }
+      |                    ^~~~~~~~~~
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:286: CMakeFiles/ui.dir/ui/src/f16.cpp.o] Error 1
+[  9%] Building CXX object CMakeFiles/net.dir/net/src/f22.cpp.o
+[  9%] Building CXX object CMakeFiles/ui.dir/ui/src/f17.cpp.o
+[  9%] Building CXX object CMakeFiles/net.dir/net/src/f23.cpp.o
+[  9%] Building CXX object CMakeFiles/audio.dir/audio/src/f21.cpp.o
+[  9%] Building CXX object CMakeFiles/core.dir/core/src/f21.cpp.o
+[ 10%] Building CXX object CMakeFiles/audio.dir/audio/src/f22.cpp.o
+[ 10%] Building CXX object CMakeFiles/audio.dir/audio/src/f23.cpp.o
+[ 11%] Building CXX object CMakeFiles/core.dir/core/src/f22.cpp.o
+[ 11%] Building CXX object CMakeFiles/net.dir/net/src/f24.cpp.o
+[ 12%] Building CXX object CMakeFiles/ui.dir/ui/src/f19.cpp.o
+[ 12%] Building CXX object CMakeFiles/ui.dir/ui/src/f18.cpp.o
+[ 12%] Building CXX object CMakeFiles/core.dir/core/src/f23.cpp.o
+[ 12%] Building CXX object CMakeFiles/ui.dir/ui/src/f20.cpp.o
+/home/dev/big/net/src/f24.cpp: In function 'int f24()':
+/home/dev/big/net/src/f24.cpp:1:20: error: 'missing_net' was not declared in this scope
+    1 | int f24() { return missing_net; }
+      |                    ^~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/net.dir/build.make:398: CMakeFiles/net.dir/net/src/f24.cpp.o] Error 1
+[ 12%] Building CXX object CMakeFiles/audio.dir/audio/src/f24.cpp.o
+[ 13%] Building CXX object CMakeFiles/net.dir/net/src/f25.cpp.o
+/home/dev/big/audio/src/f24.cpp: In function 'int f24()':
+/home/dev/big/audio/src/f24.cpp:1:20: error: 'missing_audio' was not declared in this scope
+    1 | int f24() { return missing_audio; }
+      |                    ^~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:398: CMakeFiles/audio.dir/audio/src/f24.cpp.o] Error 1
+[ 13%] Building CXX object CMakeFiles/ui.dir/ui/src/f21.cpp.o
+[ 14%] Building CXX object CMakeFiles/audio.dir/audio/src/f25.cpp.o
+[ 15%] Building CXX object CMakeFiles/ui.dir/ui/src/f22.cpp.o
+[ 15%] Building CXX object CMakeFiles/core.dir/core/src/f24.cpp.o
+[ 16%] Building CXX object CMakeFiles/net.dir/net/src/f26.cpp.o
+[ 16%] Building CXX object CMakeFiles/core.dir/core/src/f25.cpp.o
+/home/dev/big/core/src/f24.cpp: In function 'int f24()':
+/home/dev/big/core/src/f24.cpp:1:20: error: 'missing_core' was not declared in this scope
+    1 | int f24() { return missing_core; }
+      |                    ^~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/core.dir/build.make:398: CMakeFiles/core.dir/core/src/f24.cpp.o] Error 1
+[ 16%] Building CXX object CMakeFiles/ui.dir/ui/src/f23.cpp.o
+[ 16%] Building CXX object CMakeFiles/core.dir/core/src/f26.cpp.o
+[ 16%] Building CXX object CMakeFiles/ui.dir/ui/src/f24.cpp.o
+[ 17%] Building CXX object CMakeFiles/ui.dir/ui/src/f25.cpp.o
+[ 17%] Building CXX object CMakeFiles/audio.dir/audio/src/f26.cpp.o
+[ 17%] Building CXX object CMakeFiles/net.dir/net/src/f27.cpp.o
+[ 17%] Building CXX object CMakeFiles/audio.dir/audio/src/f27.cpp.o
+[ 18%] Building CXX object CMakeFiles/net.dir/net/src/f28.cpp.o
+/home/dev/big/ui/src/f24.cpp: In function 'int f24()':
+/home/dev/big/ui/src/f24.cpp:1:20: error: 'missing_ui' was not declared in this scope
+    1 | int f24() { return missing_ui; }
+      |                    ^~~~~~~~~~
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:398: CMakeFiles/ui.dir/ui/src/f24.cpp.o] Error 1
+[ 19%] Building CXX object CMakeFiles/core.dir/core/src/f28.cpp.o
+[ 20%] Building CXX object CMakeFiles/core.dir/core/src/f27.cpp.o
+[ 20%] Building CXX object CMakeFiles/audio.dir/audio/src/f28.cpp.o
+[ 20%] Building CXX object CMakeFiles/net.dir/net/src/f30.cpp.o
+[ 20%] Building CXX object CMakeFiles/net.dir/net/src/f29.cpp.o
+[ 20%] Building CXX object CMakeFiles/ui.dir/ui/src/f26.cpp.o
+[ 20%] Building CXX object CMakeFiles/audio.dir/audio/src/f29.cpp.o
+[ 20%] Building CXX object CMakeFiles/ui.dir/ui/src/f27.cpp.o
+[ 20%] Building CXX object CMakeFiles/core.dir/core/src/f29.cpp.o
+[ 21%] Building CXX object CMakeFiles/core.dir/core/src/f31.cpp.o
+[ 21%] Building CXX object CMakeFiles/core.dir/core/src/f30.cpp.o
+[ 22%] Building CXX object CMakeFiles/net.dir/net/src/f31.cpp.o
+[ 23%] Building CXX object CMakeFiles/ui.dir/ui/src/f28.cpp.o
+[ 23%] Building CXX object CMakeFiles/audio.dir/audio/src/f30.cpp.o
+[ 23%] Building CXX object CMakeFiles/net.dir/net/src/f32.cpp.o
+[ 23%] Building CXX object CMakeFiles/net.dir/net/src/f33.cpp.o
+[ 23%] Building CXX object CMakeFiles/core.dir/core/src/f32.cpp.o
+[ 23%] Building CXX object CMakeFiles/core.dir/core/src/f33.cpp.o
+/home/dev/big/net/src/f32.cpp: In function 'int f32()':
+/home/dev/big/net/src/f32.cpp:1:20: error: 'missing_net' was not declared in this scope
+    1 | int f32() { return missing_net; }
+      |                    ^~~~~~~~~~~
+[ 23%] Building CXX object CMakeFiles/ui.dir/ui/src/f29.cpp.o
+/home/dev/big/core/src/f32.cpp: In function 'int f32()':
+/home/dev/big/core/src/f32.cpp:1:20: error: 'missing_core' was not declared in this scope
+    1 | int f32() { return missing_core; }
+      |                    ^~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/core.dir/build.make:510: CMakeFiles/core.dir/core/src/f32.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/net.dir/build.make:510: CMakeFiles/net.dir/net/src/f32.cpp.o] Error 1
+[ 24%] Building CXX object CMakeFiles/audio.dir/audio/src/f31.cpp.o
+[ 24%] Building CXX object CMakeFiles/audio.dir/audio/src/f32.cpp.o
+[ 25%] Building CXX object CMakeFiles/net.dir/net/src/f34.cpp.o
+[ 25%] Building CXX object CMakeFiles/audio.dir/audio/src/f33.cpp.o
+[ 25%] Building CXX object CMakeFiles/ui.dir/ui/src/f30.cpp.o
+/home/dev/big/audio/src/f32.cpp: In function 'int f32()':
+/home/dev/big/audio/src/f32.cpp:1:20: error: 'missing_audio' was not declared in this scope
+    1 | int f32() { return missing_audio; }
+      |                    ^~~~~~~~~~~~~
+[ 26%] Building CXX object CMakeFiles/core.dir/core/src/f34.cpp.o
+[ 26%] Building CXX object CMakeFiles/net.dir/net/src/f35.cpp.o
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:510: CMakeFiles/audio.dir/audio/src/f32.cpp.o] Error 1
+[ 27%] Building CXX object CMakeFiles/ui.dir/ui/src/f31.cpp.o
+[ 28%] Building CXX object CMakeFiles/audio.dir/audio/src/f34.cpp.o
+[ 28%] Building CXX object CMakeFiles/audio.dir/audio/src/f35.cpp.o
+[ 28%] Building CXX object CMakeFiles/net.dir/net/src/f36.cpp.o
+[ 28%] Building CXX object CMakeFiles/ui.dir/ui/src/f32.cpp.o
+[ 28%] Building CXX object CMakeFiles/core.dir/core/src/f35.cpp.o
+[ 28%] Building CXX object CMakeFiles/core.dir/core/src/f36.cpp.o
+/home/dev/big/ui/src/f32.cpp: In function 'int f32()':
+/home/dev/big/ui/src/f32.cpp:1:20: error: 'missing_ui' was not declared in this scope
+    1 | int f32() { return missing_ui; }
+      |                    ^~~~~~~~~~
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:510: CMakeFiles/ui.dir/ui/src/f32.cpp.o] Error 1
+[ 28%] Building CXX object CMakeFiles/audio.dir/audio/src/f36.cpp.o
+[ 29%] Building CXX object CMakeFiles/core.dir/core/src/f37.cpp.o
+[ 29%] Building CXX object CMakeFiles/ui.dir/ui/src/f33.cpp.o
+[ 29%] Building CXX object CMakeFiles/core.dir/core/src/f38.cpp.o
+[ 30%] Building CXX object CMakeFiles/ui.dir/ui/src/f34.cpp.o
+[ 31%] Building CXX object CMakeFiles/net.dir/net/src/f37.cpp.o
+[ 31%] Building CXX object CMakeFiles/ui.dir/ui/src/f35.cpp.o
+[ 31%] Building CXX object CMakeFiles/core.dir/core/src/f39.cpp.o
+[ 31%] Building CXX object CMakeFiles/ui.dir/ui/src/f36.cpp.o
+[ 32%] Building CXX object CMakeFiles/ui.dir/ui/src/f37.cpp.o
+[ 33%] Building CXX object CMakeFiles/audio.dir/audio/src/f37.cpp.o
+[ 33%] Building CXX object CMakeFiles/ui.dir/ui/src/f38.cpp.o
+[ 33%] Building CXX object CMakeFiles/net.dir/net/src/f38.cpp.o
+[ 34%] Building CXX object CMakeFiles/net.dir/net/src/f39.cpp.o
+[ 34%] Building CXX object CMakeFiles/core.dir/core/src/f40.cpp.o
+[ 34%] Building CXX object CMakeFiles/audio.dir/audio/src/f38.cpp.o
+[ 35%] Building CXX object CMakeFiles/net.dir/net/src/f40.cpp.o
+[ 35%] Building CXX object CMakeFiles/core.dir/core/src/f41.cpp.o
+/home/dev/big/net/src/f40.cpp: In function 'int f40()':
+/home/dev/big/net/src/f40.cpp:1:20: error: 'missing_net' was not declared in this scope
+    1 | int f40() { return missing_net; }
+      |                    ^~~~~~~~~~~
+/home/dev/big/core/src/f40.cpp: In function 'int f40()':
+/home/dev/big/core/src/f40.cpp:1:20: error: 'missing_core' was not declared in this scope
+    1 | int f40() { return missing_core; }
+      |                    ^~~~~~~~~~~~
+[ 35%] Building CXX object CMakeFiles/audio.dir/audio/src/f39.cpp.o
+gmake[2]: *** [CMakeFiles/net.dir/build.make:622: CMakeFiles/net.dir/net/src/f40.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/core.dir/build.make:622: CMakeFiles/core.dir/core/src/f40.cpp.o] Error 1
+[ 35%] Building CXX object CMakeFiles/ui.dir/ui/src/f39.cpp.o
+[ 35%] Building CXX object CMakeFiles/net.dir/net/src/f41.cpp.o
+[ 36%] Building CXX object CMakeFiles/audio.dir/audio/src/f40.cpp.o
+[ 36%] Building CXX object CMakeFiles/core.dir/core/src/f42.cpp.o
+[ 36%] Building CXX object CMakeFiles/audio.dir/audio/src/f41.cpp.o
+[ 36%] Building CXX object CMakeFiles/net.dir/net/src/f42.cpp.o
+/home/dev/big/audio/src/f40.cpp: In function 'int f40()':
+/home/dev/big/audio/src/f40.cpp:1:20: error: 'missing_audio' was not declared in this scope
+    1 | int f40() { return missing_audio; }
+      |                    ^~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:622: CMakeFiles/audio.dir/audio/src/f40.cpp.o] Error 1
+[ 37%] Building CXX object CMakeFiles/ui.dir/ui/src/f40.cpp.o
+[ 37%] Building CXX object CMakeFiles/ui.dir/ui/src/f41.cpp.o
+/home/dev/big/ui/src/f40.cpp: In function 'int f40()':
+/home/dev/big/ui/src/f40.cpp:1:20: error: 'missing_ui' was not declared in this scope
+    1 | int f40() { return missing_ui; }
+      |                    ^~~~~~~~~~
+[ 37%] Building CXX object CMakeFiles/audio.dir/audio/src/f42.cpp.o
+[ 38%] Building CXX object CMakeFiles/core.dir/core/src/f43.cpp.o
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:622: CMakeFiles/ui.dir/ui/src/f40.cpp.o] Error 1
+[ 38%] Building CXX object CMakeFiles/core.dir/core/src/f44.cpp.o
+[ 39%] Building CXX object CMakeFiles/net.dir/net/src/f43.cpp.o
+[ 40%] Building CXX object CMakeFiles/ui.dir/ui/src/f43.cpp.o
+[ 40%] Building CXX object CMakeFiles/ui.dir/ui/src/f42.cpp.o
+[ 41%] Building CXX object CMakeFiles/audio.dir/audio/src/f43.cpp.o
+[ 41%] Building CXX object CMakeFiles/net.dir/net/src/f44.cpp.o
+[ 42%] Building CXX object CMakeFiles/core.dir/core/src/f46.cpp.o
+[ 42%] Building CXX object CMakeFiles/core.dir/core/src/f45.cpp.o
+[ 42%] Building CXX object CMakeFiles/audio.dir/audio/src/f44.cpp.o
+[ 42%] Building CXX object CMakeFiles/audio.dir/audio/src/f45.cpp.o
+[ 42%] Building CXX object CMakeFiles/net.dir/net/src/f45.cpp.o
+[ 42%] Building CXX object CMakeFiles/ui.dir/ui/src/f44.cpp.o
+[ 43%] Building CXX object CMakeFiles/net.dir/net/src/f46.cpp.o
+[ 43%] Building CXX object CMakeFiles/core.dir/core/src/f47.cpp.o
+[ 43%] Building CXX object CMakeFiles/audio.dir/audio/src/f47.cpp.o
+[ 44%] Building CXX object CMakeFiles/audio.dir/audio/src/f46.cpp.o
+[ 44%] Building CXX object CMakeFiles/net.dir/net/src/f47.cpp.o
+[ 44%] Building CXX object CMakeFiles/ui.dir/ui/src/f47.cpp.o
+[ 44%] Building CXX object CMakeFiles/ui.dir/ui/src/f45.cpp.o
+[ 44%] Building CXX object CMakeFiles/core.dir/core/src/f48.cpp.o
+[ 45%] Building CXX object CMakeFiles/ui.dir/ui/src/f46.cpp.o
+/home/dev/big/core/src/f48.cpp: In function 'int f48()':
+/home/dev/big/core/src/f48.cpp:1:20: error: 'missing_core' was not declared in this scope
+    1 | int f48() { return missing_core; }
+      |                    ^~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/core.dir/build.make:734: CMakeFiles/core.dir/core/src/f48.cpp.o] Error 1
+[ 46%] Building CXX object CMakeFiles/audio.dir/audio/src/f49.cpp.o
+[ 47%] Building CXX object CMakeFiles/net.dir/net/src/f49.cpp.o
+[ 48%] Building CXX object CMakeFiles/core.dir/core/src/f49.cpp.o
+[ 48%] Building CXX object CMakeFiles/net.dir/net/src/f48.cpp.o
+[ 48%] Building CXX object CMakeFiles/audio.dir/audio/src/f48.cpp.o
+[ 48%] Building CXX object CMakeFiles/core.dir/core/src/f51.cpp.o
+[ 48%] Building CXX object CMakeFiles/core.dir/core/src/f50.cpp.o
+[ 48%] Building CXX object CMakeFiles/ui.dir/ui/src/f48.cpp.o
+[ 48%] Building CXX object CMakeFiles/audio.dir/audio/src/f50.cpp.o
+/home/dev/big/audio/src/f48.cpp: In function 'int f48()':
+/home/dev/big/audio/src/f48.cpp:1:20: error: 'missing_audio' was not declared in this scope
+    1 | int f48() { return missing_audio; }
+      |                    ^~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:734: CMakeFiles/audio.dir/audio/src/f48.cpp.o] Error 1
+/home/dev/big/net/src/f48.cpp: In function 'int f48()':
+/home/dev/big/net/src/f48.cpp:1:20: error: 'missing_net' was not declared in this scope
+    1 | int f48() { return missing_net; }
+      |                    ^~~~~~~~~~~
+/home/dev/big/ui/src/f48.cpp: In function 'int f48()':
+/home/dev/big/ui/src/f48.cpp:1:20: error: 'missing_ui' was not declared in this scope
+    1 | int f48() { return missing_ui; }
+      |                    ^~~~~~~~~~
+[ 49%] Building CXX object CMakeFiles/ui.dir/ui/src/f49.cpp.o
+[ 49%] Building CXX object CMakeFiles/core.dir/core/src/f53.cpp.o
+gmake[2]: *** [CMakeFiles/net.dir/build.make:734: CMakeFiles/net.dir/net/src/f48.cpp.o] Error 1
+[ 49%] Building CXX object CMakeFiles/core.dir/core/src/f54.cpp.o
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:734: CMakeFiles/ui.dir/ui/src/f48.cpp.o] Error 1
+[ 50%] Building CXX object CMakeFiles/core.dir/core/src/f52.cpp.o
+[ 50%] Building CXX object CMakeFiles/audio.dir/audio/src/f51.cpp.o
+[ 50%] Building CXX object CMakeFiles/ui.dir/ui/src/f50.cpp.o
+[ 50%] Building CXX object CMakeFiles/net.dir/net/src/f50.cpp.o
+[ 51%] Building CXX object CMakeFiles/audio.dir/audio/src/f52.cpp.o
+[ 52%] Building CXX object CMakeFiles/core.dir/core/src/f55.cpp.o
+[ 52%] Building CXX object CMakeFiles/ui.dir/ui/src/f51.cpp.o
+[ 52%] Building CXX object CMakeFiles/net.dir/net/src/f51.cpp.o
+[ 52%] Building CXX object CMakeFiles/core.dir/core/src/f56.cpp.o
+/home/dev/big/core/src/f56.cpp: In function 'int f56()':
+/home/dev/big/core/src/f56.cpp:1:20: error: 'missing_core' was not declared in this scope
+    1 | int f56() { return missing_core; }
+      |                    ^~~~~~~~~~~~
+[ 53%] Building CXX object CMakeFiles/net.dir/net/src/f52.cpp.o
+[ 53%] Building CXX object CMakeFiles/audio.dir/audio/src/f53.cpp.o
+gmake[2]: *** [CMakeFiles/core.dir/build.make:846: CMakeFiles/core.dir/core/src/f56.cpp.o] Error 1
+[ 54%] Building CXX object CMakeFiles/ui.dir/ui/src/f52.cpp.o
+[ 54%] Building CXX object CMakeFiles/net.dir/net/src/f53.cpp.o
+[ 54%] Building CXX object CMakeFiles/core.dir/core/src/f57.cpp.o
+[ 55%] Building CXX object CMakeFiles/core.dir/core/src/f58.cpp.o
+[ 55%] Building CXX object CMakeFiles/core.dir/core/src/f59.cpp.o
+[ 55%] Building CXX object CMakeFiles/audio.dir/audio/src/f54.cpp.o
+[ 55%] Building CXX object CMakeFiles/net.dir/net/src/f54.cpp.o
+[ 56%] Building CXX object CMakeFiles/net.dir/net/src/f55.cpp.o
+[ 56%] Building CXX object CMakeFiles/core.dir/core/src/f60.cpp.o
+[ 57%] Building CXX object CMakeFiles/audio.dir/audio/src/f55.cpp.o
+[ 57%] Building CXX object CMakeFiles/ui.dir/ui/src/f53.cpp.o
+[ 57%] Building CXX object CMakeFiles/audio.dir/audio/src/f56.cpp.o
+[ 58%] Building CXX object CMakeFiles/core.dir/core/src/f61.cpp.o
+[ 58%] Building CXX object CMakeFiles/core.dir/core/src/f62.cpp.o
+/home/dev/big/audio/src/f56.cpp: In function 'int f56()':
+/home/dev/big/audio/src/f56.cpp:1:20: error: 'missing_audio' was not declared in this scope
+    1 | int f56() { return missing_audio; }
+      |                    ^~~~~~~~~~~~~
+[ 58%] Building CXX object CMakeFiles/ui.dir/ui/src/f54.cpp.o
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:846: CMakeFiles/audio.dir/audio/src/f56.cpp.o] Error 1
+[ 58%] Building CXX object CMakeFiles/audio.dir/audio/src/f57.cpp.o
+[ 59%] Building CXX object CMakeFiles/ui.dir/ui/src/f55.cpp.o
+[ 60%] Building CXX object CMakeFiles/audio.dir/audio/src/f58.cpp.o
+[ 60%] Building CXX object CMakeFiles/net.dir/net/src/f56.cpp.o
+[ 60%] Building CXX object CMakeFiles/core.dir/core/src/f63.cpp.o
+/home/dev/big/net/src/f56.cpp: In function 'int f56()':
+/home/dev/big/net/src/f56.cpp:1:20: error: 'missing_net' was not declared in this scope
+    1 | int f56() { return missing_net; }
+      |                    ^~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/net.dir/build.make:846: CMakeFiles/net.dir/net/src/f56.cpp.o] Error 1
+[ 61%] Building CXX object CMakeFiles/core.dir/core/src/f64.cpp.o
+[ 61%] Building CXX object CMakeFiles/ui.dir/ui/src/f56.cpp.o
+[ 61%] Building CXX object CMakeFiles/core.dir/core/src/f66.cpp.o
+[ 61%] Building CXX object CMakeFiles/net.dir/net/src/f57.cpp.o
+/home/dev/big/ui/src/f56.cpp: In function 'int f56()':
+/home/dev/big/ui/src/f56.cpp:1:20: error: 'missing_ui' was not declared in this scope
+    1 | int f56() { return missing_ui; }
+      |                    ^~~~~~~~~~
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:846: CMakeFiles/ui.dir/ui/src/f56.cpp.o] Error 1
+[ 61%] Building CXX object CMakeFiles/core.dir/core/src/f65.cpp.o
+[ 61%] Building CXX object CMakeFiles/audio.dir/audio/src/f59.cpp.o
+[ 62%] Building CXX object CMakeFiles/net.dir/net/src/f58.cpp.o
+[ 62%] Building CXX object CMakeFiles/ui.dir/ui/src/f57.cpp.o
+/home/dev/big/core/src/f64.cpp: In function 'int f64()':
+/home/dev/big/core/src/f64.cpp:1:20: error: 'missing_core' was not declared in this scope
+    1 | int f64() { return missing_core; }
+      |                    ^~~~~~~~~~~~
+[ 62%] Building CXX object CMakeFiles/audio.dir/audio/src/f60.cpp.o
+gmake[2]: *** [CMakeFiles/core.dir/build.make:958: CMakeFiles/core.dir/core/src/f64.cpp.o] Error 1
+[ 63%] Building CXX object CMakeFiles/core.dir/core/src/f67.cpp.o
+[ 63%] Building CXX object CMakeFiles/net.dir/net/src/f59.cpp.o
+[ 63%] Building CXX object CMakeFiles/net.dir/net/src/f60.cpp.o
+[ 63%] Building CXX object CMakeFiles/core.dir/core/src/f68.cpp.o
+[ 64%] Building CXX object CMakeFiles/ui.dir/ui/src/f58.cpp.o
+[ 65%] Building CXX object CMakeFiles/net.dir/net/src/f61.cpp.o
+[ 66%] Building CXX object CMakeFiles/audio.dir/audio/src/f61.cpp.o
+[ 66%] Building CXX object CMakeFiles/audio.dir/audio/src/f62.cpp.o
+[ 66%] Building CXX object CMakeFiles/core.dir/core/src/f69.cpp.o
+[ 67%] Building CXX object CMakeFiles/core.dir/core/src/f70.cpp.o
+[ 68%] Building CXX object CMakeFiles/net.dir/net/src/f64.cpp.o
+[ 68%] Building CXX object CMakeFiles/ui.dir/ui/src/f59.cpp.o
+[ 68%] Building CXX object CMakeFiles/net.dir/net/src/f62.cpp.o
+[ 68%] Building CXX object CMakeFiles/net.dir/net/src/f63.cpp.o
+[ 68%] Building CXX object CMakeFiles/audio.dir/audio/src/f63.cpp.o
+/home/dev/big/net/src/f64.cpp: In function 'int f64()':
+/home/dev/big/net/src/f64.cpp:1:20: error: 'missing_net' was not declared in this scope
+    1 | int f64() { return missing_net; }
+      |                    ^~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/net.dir/build.make:958: CMakeFiles/net.dir/net/src/f64.cpp.o] Error 1
+[ 69%] Building CXX object CMakeFiles/audio.dir/audio/src/f64.cpp.o
+[ 69%] Building CXX object CMakeFiles/ui.dir/ui/src/f60.cpp.o
+/home/dev/big/audio/src/f64.cpp: In function 'int f64()':
+/home/dev/big/audio/src/f64.cpp:1:20: error: 'missing_audio' was not declared in this scope
+    1 | int f64() { return missing_audio; }
+      |                    ^~~~~~~~~~~~~
+[ 69%] Building CXX object CMakeFiles/core.dir/core/src/f71.cpp.o
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:958: CMakeFiles/audio.dir/audio/src/f64.cpp.o] Error 1
+[ 69%] Building CXX object CMakeFiles/core.dir/core/src/f72.cpp.o
+[ 70%] Building CXX object CMakeFiles/ui.dir/ui/src/f61.cpp.o
+[ 71%] Building CXX object CMakeFiles/core.dir/core/src/f73.cpp.o
+[ 71%] Building CXX object CMakeFiles/net.dir/net/src/f65.cpp.o
+[ 71%] Building CXX object CMakeFiles/audio.dir/audio/src/f65.cpp.o
+/home/dev/big/core/src/f72.cpp: In function 'int f72()':
+/home/dev/big/core/src/f72.cpp:1:20: error: 'missing_core' was not declared in this scope
+    1 | int f72() { return missing_core; }
+      |                    ^~~~~~~~~~~~
+[ 71%] Building CXX object CMakeFiles/net.dir/net/src/f66.cpp.o
+gmake[2]: *** [CMakeFiles/core.dir/build.make:1070: CMakeFiles/core.dir/core/src/f72.cpp.o] Error 1
+[ 71%] Building CXX object CMakeFiles/core.dir/core/src/f74.cpp.o
+[ 71%] Building CXX object CMakeFiles/ui.dir/ui/src/f62.cpp.o
+[ 71%] Building CXX object CMakeFiles/audio.dir/audio/src/f66.cpp.o
+[ 72%] Building CXX object CMakeFiles/net.dir/net/src/f67.cpp.o
+[ 71%] Building CXX object CMakeFiles/core.dir/core/src/f75.cpp.o
+[ 72%] Building CXX object CMakeFiles/net.dir/net/src/f68.cpp.o
+[ 72%] Building CXX object CMakeFiles/net.dir/net/src/f69.cpp.o
+[ 72%] Building CXX object CMakeFiles/ui.dir/ui/src/f63.cpp.o
+[ 73%] Building CXX object CMakeFiles/ui.dir/ui/src/f64.cpp.o
+[ 74%] Building CXX object CMakeFiles/net.dir/net/src/f70.cpp.o
+gmake[2]: Target 'CMakeFiles/core.dir/build' not remade because of errors.
+gmake[1]: *** [CMakeFiles/Makefile2:89: CMakeFiles/core.dir/all] Error 2
+/home/dev/big/ui/src/f64.cpp: In function 'int f64()':
+/home/dev/big/ui/src/f64.cpp:1:20: error: 'missing_ui' was not declared in this scope
+    1 | int f64() { return missing_ui; }
+      |                    ^~~~~~~~~~
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:958: CMakeFiles/ui.dir/ui/src/f64.cpp.o] Error 1
+[ 75%] Building CXX object CMakeFiles/audio.dir/audio/src/f67.cpp.o
+[ 75%] Building CXX object CMakeFiles/net.dir/net/src/f71.cpp.o
+[ 75%] Building CXX object CMakeFiles/ui.dir/ui/src/f65.cpp.o
+[ 75%] Building CXX object CMakeFiles/ui.dir/ui/src/f66.cpp.o
+[ 75%] Building CXX object CMakeFiles/net.dir/net/src/f72.cpp.o
+[ 76%] Building CXX object CMakeFiles/ui.dir/ui/src/f67.cpp.o
+[ 77%] Building CXX object CMakeFiles/net.dir/net/src/f73.cpp.o
+[ 77%] Building CXX object CMakeFiles/ui.dir/ui/src/f68.cpp.o
+/home/dev/big/net/src/f72.cpp: In function 'int f72()':
+/home/dev/big/net/src/f72.cpp:1:20: error: 'missing_net' was not declared in this scope
+    1 | int f72() { return missing_net; }
+      |                    ^~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/net.dir/build.make:1070: CMakeFiles/net.dir/net/src/f72.cpp.o] Error 1
+[ 77%] Building CXX object CMakeFiles/net.dir/net/src/f74.cpp.o
+[ 77%] Building CXX object CMakeFiles/ui.dir/ui/src/f69.cpp.o
+[ 78%] Building CXX object CMakeFiles/ui.dir/ui/src/f70.cpp.o
+[ 78%] Building CXX object CMakeFiles/ui.dir/ui/src/f71.cpp.o
+[ 78%] Building CXX object CMakeFiles/audio.dir/audio/src/f68.cpp.o
+[ 78%] Building CXX object CMakeFiles/net.dir/net/src/f75.cpp.o
+[ 78%] Building CXX object CMakeFiles/ui.dir/ui/src/f72.cpp.o
+gmake[2]: Target 'CMakeFiles/net.dir/build' not remade because of errors.
+[ 78%] Building CXX object CMakeFiles/audio.dir/audio/src/f69.cpp.o
+gmake[1]: *** [CMakeFiles/Makefile2:115: CMakeFiles/net.dir/all] Error 2
+[ 79%] Building CXX object CMakeFiles/audio.dir/audio/src/f70.cpp.o
+[ 79%] Building CXX object CMakeFiles/audio.dir/audio/src/f71.cpp.o
+[ 79%] Building CXX object CMakeFiles/audio.dir/audio/src/f72.cpp.o
+/home/dev/big/ui/src/f72.cpp: In function 'int f72()':
+/home/dev/big/ui/src/f72.cpp:1:20: error: 'missing_ui' was not declared in this scope
+    1 | int f72() { return missing_ui; }
+      |                    ^~~~~~~~~~
+/home/dev/big/audio/src/f72.cpp: In function 'int f72()':
+/home/dev/big/audio/src/f72.cpp:1:20: error: 'missing_audio' was not declared in this scope
+    1 | int f72() { return missing_audio; }
+      |                    ^~~~~~~~~~~~~
+[ 80%] Building CXX object CMakeFiles/ui.dir/ui/src/f73.cpp.o
+gmake[2]: *** [CMakeFiles/ui.dir/build.make:1070: CMakeFiles/ui.dir/ui/src/f72.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/audio.dir/build.make:1070: CMakeFiles/audio.dir/audio/src/f72.cpp.o] Error 1
+[ 81%] Building CXX object CMakeFiles/audio.dir/audio/src/f73.cpp.o
+[ 81%] Building CXX object CMakeFiles/audio.dir/audio/src/f74.cpp.o
+[ 81%] Building CXX object CMakeFiles/ui.dir/ui/src/f75.cpp.o
+[ 81%] Building CXX object CMakeFiles/ui.dir/ui/src/f74.cpp.o
+[ 81%] Building CXX object CMakeFiles/audio.dir/audio/src/f75.cpp.o
+gmake[2]: Target 'CMakeFiles/ui.dir/build' not remade because of errors.
+gmake[1]: *** [CMakeFiles/Makefile2:141: CMakeFiles/ui.dir/all] Error 2
+gmake[2]: Target 'CMakeFiles/audio.dir/build' not remade because of errors.
+gmake[1]: *** [CMakeFiles/Makefile2:167: CMakeFiles/audio.dir/all] Error 2
+gmake[1]: Target 'all' not remade because of errors.
+gmake: *** [Makefile:91: all] Error 2
+gmake: Target 'default_target' not remade because of errors.

@@ -1,0 +1,4 @@
+Exit code 1
+# example.com/x
+# [example.com/x]
+./main.go:3:14: fmt.Printf format %d has arg "s" of wrong type string

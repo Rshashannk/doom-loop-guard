@@ -1,0 +1,4 @@
+Exit code 1
+m.py:4: error: Incompatible return value type (got "str", expected "int")  [return-value]
+m.py:6: error: Name "undefined_name" is not defined  [name-defined]
+Found 2 errors in 1 file (checked 1 source file)

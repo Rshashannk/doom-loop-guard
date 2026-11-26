@@ -1,0 +1,10 @@
+Exit code 25
+Running AutomationTool...
+Parsing command line: BuildCookRun -project=C:\Users\dev\Projects\ShooterGame\ShooterGame.uproject -platform=Win64 -clientconfig=Shipping -cook -build -stage -pak
+********** COOK COMMAND STARTED **********
+LogCook: Display: Cooked packages 1203 Packages Remain 42 Total 1245
+LogInit: Display: LogCook: Error: Package /Game/Maps/Arena.umap references missing asset /Game/Weapons/BP_Rifle
+LogInit: Display: Failure - 1 error(s), 31 warning(s)
+ERROR: Cook failed.
+AutomationTool exiting with ExitCode=25 (Error_UnknownCookFailure)
+BUILD FAILED

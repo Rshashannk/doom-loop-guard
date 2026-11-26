@@ -1,0 +1,8 @@
+[2026.11.27-09.02.13:123][  0]LogInit: Display: Running engine for game: ShooterGame
+[2026.11.27-09.02.13:131][  0]LogInit: Build: ++UE5+Release-5.4-CL-33043543
+[2026.11.27-09.02.19:902][  0]LogAutomationController: Display: Starting automation tests: ShooterGame.Weapons
+[2026.11.27-09.02.21:442][112]LogAutomationController: Error: Expected 'Ammo after reload' to be 30, but it was 15. [File:C:/Users/dev/Projects/ShooterGame/Source/ShooterGame/Tests/WeaponTests.cpp] [Line: 44]
+[2026.11.27-09.02.21:443][112]LogAutomationController: Display: Test Completed. Result={Fail} Name={Reload} Path={ShooterGame.Weapons.Reload}
+[2026.11.27-09.02.21:510][118]LogAutomationController: Display: Test Completed. Result={Success} Name={Fire} Path={ShooterGame.Weapons.Fire}
+[2026.11.27-09.02.21:612][ 95]LogAutomationController: Display: **** TEST COMPLETE. EXIT CODE: 1 ****
+[2026.11.27-09.02.21:700][ 96]LogExit: Exiting.

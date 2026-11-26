@@ -1,0 +1,4 @@
+Exit code 1
+/usr/bin/ld: /tmp/c-df8c86.o: in function `main':
+c.cpp:(.text+0x10): undefined reference to `foo()'
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)

@@ -1,0 +1,25 @@
+Exit code 101
+   Compiling rs v0.1.0 (/home/dev/proj/rs)
+error[E0425]: cannot find value `y` in this scope
+ --> src/main.rs:1:46
+  |
+1 | fn main() { let x: i32 = "s"; println!("{}", y); }
+  |                                              ^
+  |
+help: a local variable with a similar name exists
+  |
+1 - fn main() { let x: i32 = "s"; println!("{}", y); }
+1 + fn main() { let x: i32 = "s"; println!("{}", x); }
+  |
+
+error[E0308]: mismatched types
+ --> src/main.rs:1:26
+  |
+1 | fn main() { let x: i32 = "s"; println!("{}", y); }
+  |                    ---   ^^^ expected `i32`, found `&str`
+  |                    |
+  |                    expected due to this
+
+Some errors have detailed explanations: E0308, E0425.
+For more information about an error, try `rustc --explain E0308`.
+error: could not compile `rs` (bin "rs") due to 2 previous errors
